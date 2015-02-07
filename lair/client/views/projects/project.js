@@ -1,38 +1,4 @@
-function drawChart(hostChartCtx, vulnerabilityChartCtx) {
-    if (!Session.equals('projectId', null) && Session.equals('loading', false)) {
-
-        if (!Session.equals('hostChartData', null)) {
-            var hostChart = new Chart(hostChartCtx).Doughnut(Session.get('hostChartData'));
-        }
-        if (!Session.equals('vulnerabilityChartData', null)) {
-            var vulnerabilityChart = new Chart(vulnerabilityChartCtx).Doughnut(Session.get('vulnerabilityChartData'));
-        }
-    }
-
-}
-
-Template.projectDetail.rendered = function () {
-    var hostChartCtx = $("#hostChart").get(0).getContext("2d");
-    var vulnerabilityChartCtx = $("#vulnerabilityChart").get(0).getContext("2d");
-    Deps.autorun(function () {
-        var pixelRatio = window.devicePixelRatio || 1;
-        Template.project.width = 404 / pixelRatio;
-        Template.project.height = 404 / pixelRatio;
-
-        if (!Session.equals('projectId', null) && Session.equals('loading', false)) {
-            drawChart(hostChartCtx, vulnerabilityChartCtx);
-        }
-    });
-};
-
-
-var grey = '#959595';
-var blue = '#67c2ef';
-var green = '#80cd3b';
-var orange = '#fa9a4b';
-var red = '#fa603d';
-
-Template.projectDetail.project = function () {
+Template.project.project = function () {
     var project = null;
     if (Session.equals('projectId', null)) {
         project = Projects.findOne();
@@ -45,51 +11,6 @@ Template.projectDetail.project = function () {
     if (!project) {
         return false;
     }
-    var hostData = [];
-    var vulnerabilityData = [];
-
-    hostData.push({
-        value: Counts.findOne(project._id).hostLairGrey,
-        color: grey
-    });
-    hostData.push({
-        value: Counts.findOne(project._id).hostLairBlue,
-        color: blue
-    });
-    hostData.push({
-        value: Counts.findOne(project._id).hostLairGreen,
-        color: green
-    });
-    hostData.push({
-        value: Counts.findOne(project._id).hostLairOrange,
-        color: orange
-    });
-    hostData.push({
-        value: Counts.findOne(project._id).hostLairRed,
-        color: red
-    });
-
-    vulnerabilityData.push({
-        value: Counts.findOne(project._id).vulnLairGrey,
-        color: grey
-    });
-    vulnerabilityData.push({
-        value: Counts.findOne(project._id).vulnLairBlue,
-        color: blue
-    });
-    vulnerabilityData.push({
-        value: Counts.findOne(project._id).vulnLairGreen,
-        color: green
-    });
-    vulnerabilityData.push({
-        value: Counts.findOne(project._id).vulnLairOrange,
-        color: orange
-    });
-    vulnerabilityData.push({
-        value: Counts.findOne(project._id).vulnLairRed,
-        color: red
-    });
-
     Session.set('projectId', project._id);
     Session.set('hostChartData', hostData);
     Session.set('vulnerabilityChartData', vulnerabilityData);
@@ -105,13 +26,9 @@ Template.projectDetail.project = function () {
 
 Template.project.projectId = function () {
     return Session.get('projectId');
-}
-
-Template.project.loading = function () {
-    return Session.get('loading');
 };
 
-Template.projectDetail.events({
+Template.project.events({
     'click #export-local': function () {
         var projectId = Session.get('projectId');
         //var data = prepareExport(projectId);
