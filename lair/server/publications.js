@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 // owners and contributors can only see their own projects
 Meteor.publish("projectListing", function () {
     return Projects.find({

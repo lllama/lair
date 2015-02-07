@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 Template.hostOsList.projectId = function () {
     return Session.get('projectId');
 };
@@ -11,7 +8,7 @@ Template.hostOsList.hostId = function () {
 Template.hostOsList.fingerprints = function () {
     var host = Hosts.findOne(Session.get('hostId'));
     if (!host) {
-        return false
+        return false;
     }
     return host.os.sort(sortFingerprint).sort(sortWeight);
 };

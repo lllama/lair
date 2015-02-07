@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 // sorting functions
 // heard you like ternary, so i put a ternary in your ternary
 sortLongAddr = function (a, b) {

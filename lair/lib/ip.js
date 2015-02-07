@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 ipUtils = {
     ip2Long: function (ip) {
         var b = (ip + '').split('.');

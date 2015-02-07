@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 // subscribe to the list of users
 Meteor.subscribe('directory');
 // subscribe to a list of projects that you own or are a contributor

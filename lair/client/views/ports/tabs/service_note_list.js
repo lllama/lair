@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 Template.serviceNoteList.notes = function () {
     var port = Ports.findOne({
         "project_id": Session.get('projectId'),

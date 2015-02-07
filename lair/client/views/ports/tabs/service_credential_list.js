@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 Template.serviceCredentialList.projectId = function () {
     return Session.get('projectId');
 };
@@ -18,11 +15,12 @@ Template.serviceCredentialList.credentials = function () {
         return false;
     }
     return port.credentials;
-}
+};
+
 Template.serviceCredentialList.events({
     'click #remove-credentials': function () {
         var projectId = Session.get('projectId');
-        var portId = Session.get('portId')
+        var portId = Session.get('portId');
         var credentialIds = [];
         var inputs = $('.credential-checked');
         inputs.each(function () {

@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 Template.addHostOs.events({
     'submit form': function (event, tpl) {
         event.preventDefault();

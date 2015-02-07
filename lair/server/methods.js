@@ -1,7 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
-
 Meteor.methods({
     // project collections functions
     'addProject': addProject,
@@ -976,7 +972,7 @@ function removePort(id, portId) {
         throw new Meteor.Error(400, 'Missing required argument');
     }
     if (typeof id !== 'string' || !id.match(/^[a-zA-Z0-9]{17,24}$/)) {
-        throw new Meteor.Error(400, 'Invalid project id')
+        throw new Meteor.Error(400, 'Invalid project id');
     }
     if (typeof portId !== 'string' || !portId.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid port id');
@@ -1389,7 +1385,7 @@ function addServiceVulnerability(id, portId, title, cvss, description, evidence,
     if (isNaN(cvss) || cvss > 10.0 || cvss < 0.01) {
         throw new Meteor.Error(400, 'Invalid cvss');
     }
-    var vuln = models.vulnerability();
+    vuln = models.vulnerability();
     vuln.title = title;
     vuln.cvss = cvss;
     vuln.project_id = id;
@@ -1698,7 +1694,7 @@ function setVulnerabilityNoteContent(id, vulnId, title, content) {
 
 function addHostToVulnerability(id, vulnId, ip, port, protocol) {
     if (typeof id === 'undefined' || typeof vulnId === 'undefined' || typeof ip === 'undefined' || typeof port === 'undefined' || typeof protocol === 'undefined') {
-        throw new Meteor.Error(400, 'Missing required argument')
+        throw new Meteor.Error(400, 'Missing required argument');
     }
     if (typeof id !== 'string' || !id.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid project id');
@@ -1757,7 +1753,7 @@ function addHostToVulnerability(id, vulnId, ip, port, protocol) {
 
 function removeHostFromVulnerability(id, vulnId, ip, port, protocol) {
     if (typeof id === 'undefined' || typeof vulnId === 'undefined' || typeof ip === 'undefined' || typeof port === 'undefined' || typeof protocol === 'undefined') {
-        throw new Meteor.Error(400, 'Missing required argument')
+        throw new Meteor.Error(400, 'Missing required argument');
     }
     if (typeof id !== 'string' || !id.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid project id');
@@ -1796,7 +1792,7 @@ function removeHostFromVulnerability(id, vulnId, ip, port, protocol) {
 
 function removeHostFromVulnerabilities(id, ip) {
     if (typeof id === 'undefined' || typeof ip === 'undefined') {
-        throw new Meteor.Error(400, 'Missing required argument')
+        throw new Meteor.Error(400, 'Missing required argument');
     }
     if (typeof id !== 'string' || !id.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid project id');
@@ -1825,7 +1821,7 @@ function removeHostFromVulnerabilities(id, ip) {
 
 function removePortFromVulnerabilities(id, ip, port, protocol) {
     if (typeof id === 'undefined' || typeof ip === 'undefined' || typeof port === 'undefined' || typeof protocol === 'undefined') {
-        throw new Meteor.Error(400, 'Missing required argument')
+        throw new Meteor.Error(400, 'Missing required argument');
     }
     if (typeof id !== 'string' || !id.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid project id');
@@ -2097,7 +2093,7 @@ function createLairUser(email, password, isAdmin) {
 
 function removeLairUser(id) {
     if (!Meteor.user().isAdmin) {
-        throw new Meteor.Error(403, 'Only admins may delete users')
+        throw new Meteor.Error(403, 'Only admins may delete users');
     }
     if (typeof id !== 'string' || !id.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid user id');

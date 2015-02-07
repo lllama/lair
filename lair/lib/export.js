@@ -1,6 +1,3 @@
-// Copyright (c) 2014 Tom Steele, Dan Kottmann, FishNet Security
-// See the file license.txt for copying permission
-
 prepareExport = function (id) {
     var project = Projects.findOne({
         _id: id
