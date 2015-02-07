@@ -2,7 +2,9 @@
 // See the file license.txt for copying permission
 
 // Inserts the current version number
-Meteor.startup(function() {
-  Versions.remove({});
-  Versions.insert({"version": DOC_VERSION})
+Meteor.startup(function () {
+    Versions.remove({});
+    Versions.insert({
+        "version": DOC_VERSION
+    })
 });

@@ -6,21 +6,22 @@ Meteor.subscribe('directory');
 // subscribe to a list of projects that you own or are a contributor
 Meteor.subscribe('projectListing');
 // this goes in an autorun because the session variable will change
-Deps.autorun(function() {
-  var count = 0;
-  Meteor.subscribe('project', Session.get('projectId'), function() {
-    count++;
-    loaded();
-  });
-  Meteor.subscribe('counts', Session.get('projectId'), Session.get('hostQuery'), Session.get('vulnerabilityQuery'), function() {
-    count++;
-    loaded();
-  });
-  function loaded() {
-    if (count === 2) {
-      Session.set('loading', false);
+Deps.autorun(function () {
+    var count = 0;
+    Meteor.subscribe('project', Session.get('projectId'), function () {
+        count++;
+        loaded();
+    });
+    Meteor.subscribe('counts', Session.get('projectId'), Session.get('hostQuery'), Session.get('vulnerabilityQuery'), function () {
+        count++;
+        loaded();
+    });
+
+    function loaded() {
+        if (count === 2) {
+            Session.set('loading', false);
+        }
     }
-  }
 });
 // subscribe to settings
 Meteor.subscribe('settings');

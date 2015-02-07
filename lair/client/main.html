@@ -1,19 +1,17 @@
 <head>
-  <title>Lair</title>
+    <title>Lair</title>
 </head>
+
 <body>
 </body>
 
 <template name="layout">
-  <div id="wrap">
-    {{> header}}
-    <div class="container-fluid">
-      {{> yield}}
-      {{#if currentUser}}
-        {{> chat}}
-      {{/if}}
+    <div id="wrap">
+        {{> header}}
+        <div class="container-fluid">
+            {{> yield}} {{#if currentUser}} {{> chat}} {{/if}}
+        </div>
+        <div id="push"></div>
     </div>
-    <div id="push"></div>
-  </div>
-  {{> footer}}
+    {{> footer}}
 </template>
