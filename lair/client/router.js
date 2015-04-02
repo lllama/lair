@@ -9,11 +9,12 @@ Router.map(function () {
     this.route('signin', {
         path: '/signin'
     });
-    this.route('signin', {
+    this.route('signout', {
         path: '/signout',
         onBeforeAction: function () {
             Session.set('projectId', null);
             Meteor.logout();
+            this.next();
         }
     });
     this.route('changePassword', {
@@ -40,6 +41,7 @@ Router.map(function () {
             Session.set('hostsViewSkip', 0);
             Session.get('hostsViewLimit', 25);
             applyHostFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -53,12 +55,13 @@ Router.map(function () {
             ];
         }
     });
-    this.route('hostList', {
+    this.route('hostListRedirect', {
         template: 'hostList',
         path: '/project/:pid/hosts',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             applyHostFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -77,6 +80,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -91,10 +95,10 @@ Router.map(function () {
             if (this.ready()) {
                 var id = Session.get('projectId');
                 var hosts = Hosts.find({
-                    "project_id": id
+                    'project_id': id
                 }, {
-                    "sort": {
-                        "long_addr": 1
+                    'sort': {
+                        'long_addr': 1
                     }
                 }).fetch();
                 return this.redirect('/project/' + id + '/hosts/' + hosts[0]._id);
@@ -107,6 +111,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -121,10 +126,10 @@ Router.map(function () {
             if (this.ready()) {
                 var id = Session.get('projectId');
                 var hosts = Hosts.find({
-                    "project_id": id
+                    'project_id': id
                 }, {
-                    "sort": {
-                        "long_addr": 1
+                    'sort': {
+                        'long_addr': 1
                     }
                 }).fetch();
                 return this.redirect('/project/' + id + '/hosts/' + hosts[0]._id);
@@ -136,14 +141,16 @@ Router.map(function () {
         path: '/project/:pid/hosts/new',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
+            this.next();
         }
     });
-    this.route('hostServiceList', {
+    this.route('hostServiceListRedirect', {
         path: '/project/:pid/hosts/:hid',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
             applyPortFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -159,6 +166,7 @@ Router.map(function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
             applyPortFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -173,6 +181,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -182,12 +191,13 @@ Router.map(function () {
             ];
         }
     });
-    this.route('serviceVulnerabilityList', {
+    this.route('serviceVulnerabilityListRedirect', {
         path: '/project/:pid/services/:sid',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('portId', this.params.sid);
             applyVulnerabilityFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -203,6 +213,7 @@ Router.map(function () {
             Session.set('projectId', this.params.pid);
             Session.set('portId', this.params.sid);
             applyVulnerabilityFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -218,6 +229,7 @@ Router.map(function () {
             Session.set('projectId', this.params.pid);
             Session.set('portId', this.params.sid);
             Session.set('noteTitle', null);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -232,6 +244,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('portId', this.params.sid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -246,6 +259,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('portId', this.params.sid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -261,6 +275,7 @@ Router.map(function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
             applyVulnerabilityFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -275,6 +290,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -289,6 +305,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -304,6 +321,7 @@ Router.map(function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
             Session.set('noteTitle', null);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -318,6 +336,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -346,6 +365,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -360,6 +380,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('hostId', this.params.hid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -374,6 +395,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('servicesViewQuery', null);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -382,10 +404,14 @@ Router.map(function () {
             ];
         },
         action: function () {
-            if (this.ready())
+            if (this.ready()) {
                 this.render();
-            else
+                this.next();
+            } else {
                 this.render('Loading');
+                this.next();
+            }
+
         }
     });
     this.route('vulnerabilityList', {
@@ -393,6 +419,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             applyVulnerabilityFilter();
+            this.next();
         },
         waitOn: function () {
             return [
@@ -410,6 +437,7 @@ Router.map(function () {
         path: '/project/:pid/vulnerabilities/new',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -428,6 +456,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('portId', this.params.sid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -447,6 +476,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -461,16 +491,17 @@ Router.map(function () {
             if (this.ready()) {
                 var id = Session.get('projectId');
                 var vulnerabilities = Vulnerabilities.find({
-                    "project_id": id
+                    'project_id': id
                 }, {
                     sort: {
-                        "cvss": -1,
-                        "title": 1
+                        'cvss': -1,
+                        'title': 1
                     }
                 }).fetch();
-                return this.redirect('/project/' + id + '/vulnerabilities/' + vulnerabilities[0]._id);
-            } else
+                this.redirect('/project/' + id + '/vulnerabilities/' + vulnerabilities[0]._id);
+            } else {
                 this.render('Loading');
+            }
         }
     });
     this.route('vulnerabilityPrev', {
@@ -478,6 +509,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -492,23 +524,25 @@ Router.map(function () {
             if (this.ready()) {
                 var id = Session.get('projectId');
                 var vulnerabilities = Vulnerabilities.find({
-                    "project_id": id
+                    'project_id': id
                 }, {
                     sort: {
-                        "cvss": -1,
-                        "title": 1
+                        'cvss': -1,
+                        'title': 1
                     }
                 }).fetch();
-                return this.redirect('/project/' + id + '/vulnerabilities/' + vulnerabilities[0]._id);
-            } else
+                this.redirect('/project/' + id + '/vulnerabilities/' + vulnerabilities[0]._id);
+            } else {
                 this.render('Loading');
+            }
         }
     });
-    this.route('vulnerabilityDescription', {
+    this.route('vulnerabilityDescriptionRedirect', {
         path: '/project/:pid/vulnerabilities/:vid',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -521,6 +555,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -533,6 +568,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -545,6 +581,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -557,6 +594,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -571,6 +609,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -583,6 +622,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -595,6 +635,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -620,6 +661,7 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('vulnerabilityId', this.params.vid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -632,12 +674,14 @@ Router.map(function () {
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
             Session.set('noteTitle', null);
+            this.next();
         }
     });
     this.route('credentialList', {
         path: '/project/:pid/credentials',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -656,6 +700,7 @@ Router.map(function () {
         path: '/project/:pid/credentials/new',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
+            this.next();
         },
         waitOn: function () {
             return [
@@ -674,18 +719,21 @@ Router.map(function () {
         path: '/project/:pid/contributors',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
+            this.next();
         }
     });
     this.route('fileList', {
         path: '/project/:pid/files',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
+            this.next();
         }
     });
     this.route('droneLog', {
         path: '/project/:pid/log',
         onBeforeAction: function () {
             Session.set('projectId', this.params.pid);
+            this.next();
         }
     });
     this.route('notFound', {
@@ -698,6 +746,7 @@ Router.onBeforeAction(function () {
     if (!Meteor.loggingIn() && !Meteor.user()) {
         this.redirect('signin');
     }
+    this.next();
 }, {
     except: 'signin'
 });
@@ -705,12 +754,13 @@ Router.onBeforeAction(function () {
 // 2. clear alerts filter
 Router.onBeforeAction(function () {
     Alerts.remove({});
+    this.next();
 });
 
 function applyVulnerabilityFilter() {
     var persist = Settings.findOne({
-        "setting": "persistViewFilters",
-        "enabled": true
+        'setting': 'persistViewFilters',
+        'enabled': true
     });
     if (!persist) {
         unsetVulnerabilityStatusButtons();
@@ -720,8 +770,8 @@ function applyVulnerabilityFilter() {
 
 function applyHostFilter() {
     var persist = Settings.findOne({
-        "setting": "persistViewFilters",
-        "enabled": true
+        'setting': 'persistViewFilters',
+        'enabled': true
     });
     if (!persist) {
         unsetHostStatusButtons();
@@ -731,8 +781,8 @@ function applyHostFilter() {
 
 function applyPortFilter() {
     var persist = Settings.findOne({
-        "setting": "persistViewFilters",
-        "enabled": true
+        'setting': 'persistViewFilters',
+        'enabled': true
     });
     if (!persist) {
         unsetPortStatusButtons();
