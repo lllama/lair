@@ -1,6 +1,8 @@
-Template.signin.initialUser = function () {
-    return Meteor.users.find().count() < 1;
-};
+Template.signin.helpers({
+    initialUser: function () {
+        return Meteor.users.find().count() < 1;
+    }
+});
 
 Template.signin.events({
     'submit form': function (event, tpl) {
