@@ -1,30 +1,86 @@
 <template name="signin">
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row" style="margin-top: 40px">
+        <div class="col-xs-6 col-xs-offset-4">
             {{> alerts}}
         </div>
     </div>
     {{#if initialUser}}
-    <div class="row-fluid">
-        <div class="span4 signin-form">
-            <p class="large-font">Please create a user</p>
-            <form>
-                <input name="email" type="text" class="input-block-level" placeholder="Email" />
-                <input name="password" type="password" class="input-block-level" placeholder="Password" />
-                <button type="submit" class="btn btn-primary btn-block">Create user</button>
-            </form>
+        <div class="row" style="margin-top: 40px">
+            <div class="col-xs-6 col-xs-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong> Create a first user to continue.</strong>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-xs-12 col-xs-10  col-xs-offset-1 ">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">
+													<i class="glyphicon glyphicon-user"></i>
+												</span>
+                                                <input class="form-control" placeholder="Username" name="email" type="text" autofocus/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">
+													<i class="glyphicon glyphicon-lock"></i>
+												</span>
+                                                <input class="form-control" placeholder="Password" name="password" type="password" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign in"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
     {{else}}
-    <div class="row-fluid">
-        <div class="span4 signin-form">
-            <p class="large-font">Please sign in</p>
-            <form>
-                <input name="email" type="text" class="input-block-level" placeholder="Email" />
-                <input name="password" type="password" class="input-block-level" placeholder="Password" />
-                <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-            </form>
+        <div class="row" style="margin-top: 40px">
+            <div class="col-xs-6 col-xs-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong> Sign in to continue</strong>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-xs-12 col-xs-10  col-xs-offset-1 ">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">
+													<i class="glyphicon glyphicon-user"></i>
+												</span>
+                                                <input class="form-control" placeholder="Username" name="email" type="text" autofocus/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon">
+													<i class="glyphicon glyphicon-lock"></i>
+												</span>
+                                                <input class="form-control" placeholder="Password" name="password" type="password" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign in"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
     {{/if}}
 </template>

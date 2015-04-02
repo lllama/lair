@@ -11,7 +11,7 @@ Template.signin.events({
             Meteor.call('createLairUser', email, password, true, function (err) {
                 if (err) {
                     return Alerts.insert({
-                        "class": "alert-error",
+                        "class": "alert-warning",
                         "strong": "Error",
                         "message": err.reason
                     });
@@ -19,7 +19,7 @@ Template.signin.events({
                 return Meteor.loginWithPassword(email, password, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-error",
+                            "class": "alert-warning",
                             "strong": "Error",
                             "message": err.reason
                         });
@@ -31,7 +31,7 @@ Template.signin.events({
             Meteor.loginWithPassword(email, password, function (err) {
                 if (err) {
                     return Alerts.insert({
-                        "class": "alert-error",
+                        "class": "alert-warning",
                         "strong": "Error",
                         "message": err.reason
                     });
