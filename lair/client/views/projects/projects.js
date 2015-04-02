@@ -1,10 +1,12 @@
-Template.projects.projects = function () {
-    return Projects.find({}, {
-        sort: {
-            project_name: 1
-        }
-    }).fetch();
-};
+Template.projects.helpers({
+    projects: function () {
+        return Projects.find({}, {
+            sort: {
+                project_name: 1
+            }
+        }).fetch();
+    }
+});
 
 Template.projects.events({
     'click .project': function () {
