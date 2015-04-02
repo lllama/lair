@@ -6,12 +6,12 @@
 </body>
 
 <template name="layout">
-    <div id="wrap">
-        {{> header}}
-        <div class="container-fluid">
-            {{> yield}} {{#if currentUser}} {{> chat}} {{/if}}
-        </div>
-        <div id="push"></div>
+    {{#if currentUser}} {{> header}} {{/if}}
+    <div class="container-fluid">
+        {{> yield}} {{#if currentUser}} {{> chat}} {{/if}}
     </div>
-    {{> footer}}
+</template>
+
+<template name="loading">
+    {{> spinner}}
 </template>
