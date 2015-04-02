@@ -66,7 +66,7 @@ Template.hostGist.events({
                 return Router.go('/project/' + id);
             }
             return Alerts.insert({
-                "class": "alert-error",
+                "class": "alert-warning",
                 "strong": "Error",
                 "message": err.reason
             });

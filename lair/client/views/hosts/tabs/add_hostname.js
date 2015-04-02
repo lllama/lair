@@ -7,7 +7,7 @@ Template.addHostname.events({
         Meteor.call('addHostname', projectId, hostId, hostname, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": err.reason
                 });

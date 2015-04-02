@@ -35,7 +35,7 @@ Template.project.events({
         Meteor.call('downloadProject', Session.get('projectId'), function (err, res) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": "Download Failed"
                 });
@@ -60,7 +60,7 @@ Template.project.events({
         Meteor.call('exportProject', Session.get('projectId'), url, username, password, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": "Export Failed"
                 });
@@ -78,7 +78,7 @@ Template.project.events({
             Session.set('projectId', null);
             if (err) {
                 Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": err.reason
                 });
@@ -91,7 +91,7 @@ Template.project.events({
             Session.set('projectId', null);
             if (err) {
                 Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": err.reason
                 });

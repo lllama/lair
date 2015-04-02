@@ -1,41 +1,41 @@
 <template name="header">
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="/">LAIR</a> {{#if currentUser}}
-                <div class="nav-collapse collapse">
-                    <ul class="nav pull-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{currentUser.emails.[0].address}}<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/changepassword">Change Password</a>
-                                </li>
-                                <li><a href="/signout">Sign Out</a>
-                                </li>
-                            </ul>
+                <a class="navbar-brand" href="/">LAIR</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{currentUser.emails.[0].address}}<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{pathFor route='changePassword'}}">Change Password</a>
+                            </li>
+                            <li><a href="{{pathFor route='signout'}}">Sign Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                {{#if currentUser.isAdmin}}
+                    <ul class="nav navbar-nav pull-right">
+                        <li><a href="{{pathFor route='settings'}}">Settings</a>
                         </li>
                     </ul>
-                    {{#if currentUser.isAdmin}}
-                    <ul class="nav pull-right">
-                        <li><a href="/settings">Settings</a>
-                        </li>
-                    </ul>
-                    {{/if}}
-                    <ul class="nav pull-right">
-                        {{#if projectId}}
-                        <li class="nav-like-link">PID: {{projectId}}&nbsp;</li>
-                        {{/if}} {{#if projectName}}
-                        <li class="nav-like-link">Name: {{projectName}}</li>
-                        {{/if}}
-                    </ul>
-                </div>
                 {{/if}}
+                <ul class="nav navbar-nav pull-right">
+                    {{#if projectId}}
+                        <li class="nav-like-link">PID: {{projectId}}&nbsp;</li>
+                    {{/if}}
+                    {{#if projectName}}
+                        <li class="nav-like-link">Name: {{projectName}}</li>
+                    {{/if}}
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
 </template>

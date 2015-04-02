@@ -10,7 +10,7 @@ Template.addCredentialFull.events({
         });
         if (typeof host === 'undefined') {
             return Alerts.insert({
-                "class": "alert-error",
+                "class": "alert-warning",
                 "strong": "Error",
                 "message": "The host provided doesn't exist"
             });
@@ -22,7 +22,7 @@ Template.addCredentialFull.events({
         });
         if (typeof port === 'undefined') {
             return Alerts.insert({
-                "class": "alert-error",
+                "class": "alert-warning",
                 "strong": "Error",
                 "message": "The port provided doesn't exist"
             });
@@ -33,7 +33,7 @@ Template.addCredentialFull.events({
         Meteor.call('addCredential', projectId, port._id, username, password, hash, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": err.reason
                 });

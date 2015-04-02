@@ -16,7 +16,7 @@ Template.fileList.events({
         Meteor.call('addFile', projectId, name, url, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": err.reason
                 });

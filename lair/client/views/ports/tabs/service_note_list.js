@@ -36,7 +36,7 @@ Template.serviceNoteList.events({
             Meteor.call('addPortNote', projectId, portId, title, content, function (err) {
                 if (err) {
                     return Alerts.insert({
-                        "class": "alert-error",
+                        "class": "alert-warning",
                         "strong": "Error",
                         "message": err.reason
                     });
@@ -53,7 +53,7 @@ Template.serviceNoteList.events({
             Meteor.call('setPortNoteContent', projectId, portId, Session.get('noteTitle'), content, function (err) {
                 if (err) {
                     return Alerts.insert({
-                        "class": "alert-error",
+                        "class": "alert-warning",
                         "strong": "Error",
                         "message": err.reason
                     });

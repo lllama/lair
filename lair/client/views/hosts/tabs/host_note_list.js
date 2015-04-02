@@ -62,7 +62,7 @@ Template.hostNoteList.events({
             content = tpl.find('[name=content]').value;
             if ((port !== '' && protocol === '') || (port === '' && protocol !== '')) {
                 return Alerts.insert({
-                    "class": "alert-error",
+                    "class": "alert-warning",
                     "strong": "Error",
                     "message": "Missing required field"
                 });
@@ -71,7 +71,7 @@ Template.hostNoteList.events({
                 port = parseInt(port);
                 if (isNaN(port) || port > 655535 || port < 0) {
                     return Alerts.insert({
-                        "class": "alert-error",
+                        "class": "alert-warning",
                         "strong": "Error",
                         "message": "Invalid port number"
                     });
@@ -83,7 +83,7 @@ Template.hostNoteList.events({
                 });
                 if (!port) {
                     return Alerts.insert({
-                        "class": "alert-error",
+                        "class": "alert-warning",
                         "strong": "Error",
                         "message": "Service not found for host"
                     });
@@ -91,7 +91,7 @@ Template.hostNoteList.events({
                 Meteor.call('addPortNote', Session.get('projectId'), port._id, title, content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-error",
+                            "class": "alert-warning",
                             "strong": "Error",
                             "message": err.reason
                         });
@@ -108,7 +108,7 @@ Template.hostNoteList.events({
                 Meteor.call('addHostNote', Session.get('projectId'), Session.get('hostId'), title, content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-error",
+                            "class": "alert-warning",
                             "strong": "Error",
                             "message": err.reason
                         });
@@ -127,7 +127,7 @@ Template.hostNoteList.events({
                 Meteor.call('setHostNoteContent', projectId, hostId, Session.get('noteTitle'), content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-error",
+                            "class": "alert-warning",
                             "strong": "Error",
                             "message": err.reason
                         });
@@ -142,7 +142,7 @@ Template.hostNoteList.events({
                 Meteor.call('setPortNoteContent', projectId, portId, Session.get('noteTitle'), content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-error",
+                            "class": "alert-warning",
                             "strong": "Error",
                             "message": err.reason
                         });
