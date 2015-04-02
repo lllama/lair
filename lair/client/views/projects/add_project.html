@@ -1,13 +1,45 @@
 <template name="addProject">
-    <div class="row-fluid">
-        <div class="span4">
+    <div class="row">
+        <div class="col-xs-4">
             {{> alerts}}
-            <form>
-                <input type="text" class="span12" placeholder="Name *Required" name="name" />
-                <input type="text" class="span12" placeholder="industry" name="industry" />
-                <textarea class="span12" placeholder="Description" name="description"></textarea>
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <form class="form-horizontal">
+                <fieldset>
+
+                    <legend>New Project</legend>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="name">Name</label>
+                        <div class="col-md-8">
+                            <input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="industry">Industry</label>
+                        <div class="col-md-8">
+                            <input id="industry" name="industry" type="text" placeholder="" class="form-control input-md">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="description">Description</label>
+                        <div class="col-md-8">
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for=""></label>
+                        <div class="col-md-4">
+                            <button id="" name="" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </fieldset>
             </form>
+
         </div>
     </div>
 </template>

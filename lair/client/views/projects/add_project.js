@@ -7,9 +7,9 @@ Template.addProject.events({
         Meteor.call('addProject', name, industry, description, function (err, res) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason
+                    'class': 'alert-warning',
+                    'strong': 'Error',
+                    'message': err.reason
                 });
             }
             return Router.go('/project/' + res);
