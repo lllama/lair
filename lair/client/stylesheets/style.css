@@ -1,27 +1,7 @@
-html,
-body {
-    height: 100%;
+.navbar-static-top {
+    margin-bottom: 19px;
 }
-#wrap {
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    margin: 0 auto -60px;
-}
-#push,
-#footer {
-    height: 60px;
-}
-#footer {
-    background-color: #f5f5f5;
-}
-#wrap > .container-fluid {
-    padding-top: 60px;
-    padding-bottom: 10px;
-}
-.container-fluid .credit {
-    margin: 20px 0;
-}
+
 .hover-hand {
     cursor: pointer!important;
 }
@@ -29,18 +9,10 @@ body {
     width: 1px;
     white-space: nowrap;
 }
-/* signin form */
-
-.signin-form {
-    max-width: 350px;
-    float: none!important;
-    margin-left: auto!important;
-    margin-right: auto!important;
-}
 /* font styles */
 
 .large-font {
-    font-size: 24.5px;
+    font-size: 24px;
 }
 .medium-font {
     font-size: 20px;
@@ -58,8 +30,39 @@ body {
     width: 50px;
     height: 30px;
 }
-/* STATUS MAPPING COLORS */
 
+/* projects */
+.project-li {
+    border-bottom: 1px solid #e7e7e7;
+    min-height: 100px;
+    padding-top: 15px;
+}
+
+/* hosts */
+.host-li, .port-li {
+    min-height: 40px;
+    padding: 10px 15px 5px 15px;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+}
+.host-li:last-child, .port-li:last-child {
+    border-bottom: 1px solid;
+}
+
+.host-li-ip, .port-li-port {
+    display: inline-block;
+    width: 20%;
+}
+.host-li-status, .port-li-status {
+    display: inline-block;
+    width: 20%;
+}
+
+/* STATUS MAPPING COLORS */
+.btn.disabled {
+    pointer-events: inherit;
+}
 .lair-grey {
     background-color: rgba(61, 72, 91, 0.34)!important;
     border-color: rgb(149, 149, 149) !important;
@@ -67,6 +70,12 @@ body {
 .lair-grey td {
     border-color: rgb(149, 149, 149) !important;
 }
+
+.lair-grey-li {
+    border-color: rgb(149, 149, 149) !important;
+    background-color: rgba(149, 149, 149, 0.20) !important;
+}
+
 .lair-blue {
     background-color: rgba(103, 194, 239, 0.58)!important;
     border-color: rgb(103, 194, 239)!important;
@@ -74,6 +83,11 @@ body {
 .lair-blue td {
     border-color: rgb(103, 194, 239)!important;
 }
+.lair-blue-li {
+    border-color: rgb(103, 194, 239)!important;
+    background-color: rgba(103, 194, 239, 0.20)!important;
+}
+
 .lair-green {
     background-color: rgba(128, 205, 59, 0.58)!important;
     border-color: rgb(128, 205, 59)!important;
@@ -81,6 +95,11 @@ body {
 .lair-green td {
     border-color: rgb(128, 205, 59)!important;
 }
+.lair-green-li {
+    border-color: rgb(128, 205, 59)!important;
+    background-color: rgba(128, 205, 59, 0.20)!important;
+}
+
 .lair-orange {
     background-color: rgba(250, 154, 76, 0.58)!important;
     border-color: rgb(250, 154, 76) !important;
@@ -88,6 +107,11 @@ body {
 .lair-orange td {
     border-color: rgb(250, 154, 75)!important;
 }
+.lair-orange-li {
+    border-color: rgb(250, 154, 76) !important;
+    background-color: rgba(250, 154, 76, 0.20) !important;
+}
+
 .lair-red {
     background-color: rgba(250, 96, 61, 0.58)!important;
     border-color: rgb(250, 96, 61)!important;
@@ -95,6 +119,11 @@ body {
 .lair-red td {
     border-color: rgb(250, 96, 61)!important;
 }
+.lair-red-li {
+    border-color: rgb(250, 96, 61)!important;
+    background-color: rgba(250, 96, 61, 0.20)!important;
+}
+
 th {
     font-weight: normal!important;
 }
@@ -115,9 +144,11 @@ a.dontstyle:hover {
     cursor: default!important;
     background-color: #ffffff!important;
 }
+
 textarea {
     max-width: 100%;
 }
+
 .full-height {
     min-height: 100%!important;
 }
@@ -144,6 +175,7 @@ textarea {
 .new-message {
     color: #fa5a3d;
 }
+
 #chat-window {
     background: #ffffff;
     z-index: 1;
@@ -187,7 +219,7 @@ textarea {
 }
 .nav-like-link {
     float: none;
-    padding: 10px 15px 10px;
+    padding: 15px 15px 10px;
     color: #777;
     text-decoration: none;
     text-shadow: 0 1px 0 #fff;
