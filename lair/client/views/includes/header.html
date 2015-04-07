@@ -22,17 +22,16 @@
                     </li>
                 </ul>
                 {{#if currentUser.isAdmin}}
-                    <ul class="nav navbar-nav pull-right">
-                        <li><a href="{{pathFor route='settings'}}">Settings</a>
-                        </li>
-                    </ul>
+                <ul class="nav navbar-nav pull-right">
+                    <li><a href="{{pathFor route='settings'}}">Settings</a>
+                    </li>
+                </ul>
                 {{/if}}
                 <ul class="nav navbar-nav pull-right">
                     {{#if projectId}}
-                        <li class="nav-like-link">PID: {{projectId}}&nbsp;</li>
-                    {{/if}}
-                    {{#if projectName}}
-                        <li class="nav-like-link">Name: {{projectName}}</li>
+                    <li class="nav-like-link">PID: {{projectId}}&nbsp;</li>
+                    {{/if}} {{#if projectName}}
+                    <li class="nav-like-link">Name: {{projectName}}</li>
                     {{/if}}
                 </ul>
             </div>

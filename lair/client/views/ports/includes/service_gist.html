@@ -1,18 +1,23 @@
 <template name="serviceGist">
     {{#with port}}
-    <div class="row-fluid">
-        <div class="span4">
+    <div class="row">
+        <div class="col-xs-4">
             <ul class="unstyled">
-                <li><strong>Port: </strong>{{port.port}}/{{protocol}}</li>
-                <li><strong>Service: </strong>{{service}}</li>
-                <li><strong>Product: </strong>{{product}}</li>
-                <li><strong>Last Modified By: </strong>{{last_modified_by}}</li>
+                <li>
+                    <strong>Port: </strong>{{port.port}}/{{protocol}}</li>
+                <li>
+                    <strong>Service: </strong>{{service}}</li>
+                <li>
+                    <strong>Product: </strong>{{product}}</li>
+                <li>
+                    <strong>Last Modified By: </strong>{{last_modified_by}}</li>
                 <li class="hover-hand port-status {{status}}">&nbsp;</li>
             </ul>
         </div>
-        <div class="span4">
+        <div class="col-xs-4">
             <ul class="unstyled">
-                <li><strong>Host: </strong><a href="/project/{{projectId}}/hosts/{{host_id}}/services">{{string_addr}}</a>
+                <li>
+                    <strong>Host: </strong><a href="/project/{{projectId}}/hosts/{{host_id}}/services">{{string_addr}}</a>
                 </li>
                 <li>&nbsp;</li>
                 <li>&nbsp;</li>
@@ -24,7 +29,7 @@
                 </li>
             </ul>
         </div>
-        <div class="span4">
+        <div class="col-xs-4">
             <a href="#removePortModal" role="button" class="btn btn-danger pull-right" data-toggle="modal"><i class="fa fa-trash-o hover-hand"></i></a>
             <button id="next-port" class="btn pull-right"><i class="fa fa-fast-forward"></i>
             </button>
@@ -40,8 +45,8 @@
         </div>
         <div class="modal-body">
             <form style="text-align: center">
-                <input type="text" placeholder="{{service}}" name="edit-service" class="span7" />
-                <input type="text" placeholder="{{product}}" name="edit-product" class="span7" />
+                <input type="text" placeholder="{{service}}" name="edit-service" class="col-xs-7" />
+                <input type="text" placeholder="{{product}}" name="edit-product" class="col-xs-7" />
             </form>
         </div>
         <div class="modal-footer">
