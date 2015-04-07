@@ -1,11 +1,13 @@
-Template.hostGist.host = function () {
-    var host = Hosts.findOne(Session.get('hostId'));
-    if (host) {
-        host.os = host.os.sort(sortFingerprint).sort(sortWeight)[0];
-        return host;
+Template.hostGist.helpers({
+    host: function () {
+        var host = Hosts.findOne(Session.get('hostId'));
+        if (host) {
+            host.os = host.os.sort(sortFingerprint).sort(sortWeight)[0];
+            return host;
+        }
+        return {};
     }
-    return {};
-};
+});
 
 Template.hostGist.events({
     'click .flag-enabled': function () {
@@ -27,10 +29,10 @@ Template.hostGist.events({
     'click #next-host': function () {
         var id = Session.get('projectId');
         var hosts = Hosts.find({
-            "project_id": id
+            project_id: id
         }, {
-            "sort": {
-                "long_addr": 1
+            sort: {
+                long_addr: 1
             }
         }).fetch();
         var i = _.indexOf(_.pluck(hosts, '_id'), Session.get('hostId')) + 1;
@@ -43,10 +45,10 @@ Template.hostGist.events({
     'click #previous-host': function () {
         var id = Session.get('projectId');
         var hosts = Hosts.find({
-            "project_id": id
+            project_id: id
         }, {
-            "sort": {
-                "long_addr": 1
+            sort: {
+                long_addr: 1
             }
         }).fetch();
         var i = _.indexOf(_.pluck(hosts, '_id'), Session.get('hostId')) - 1;
@@ -66,9 +68,9 @@ Template.hostGist.events({
                 return Router.go('/project/' + id);
             }
             return Alerts.insert({
-                "class": "alert-warning",
-                "strong": "Error",
-                "message": err.reason
+                class: 'alert-warning',
+                strong: 'Error',
+                message: err.reason
             });
         });
     }

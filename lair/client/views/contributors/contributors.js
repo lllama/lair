@@ -1,54 +1,56 @@
-Template.contributors.users = function () {
-    var project = Projects.findOne(Session.get('projectId'));
-    var users = Meteor.users.find({
-        $and: [{
-            _id: {
-                $ne: project['owner']
-            }
-        }, {
-            _id: {
-                $nin: project['contributors']
-            }
-        }, {
-            _id: {
-                $ne: Meteor.userId()
-            }
-        }]
-    });
-    var ret = [];
-    users.forEach(function (u) {
-        var user = {
-            '_id': u['_id'],
-            'email': u['emails'][0]['address']
-        };
-        ret.push(user);
-    });
-    return ret;
-};
+Template.contributors.helpers({
+  users: function () {
+      var project = Projects.findOne(Session.get('projectId'));
+      var users = Meteor.users.find({
+          $and: [{
+              _id: {
+                  $ne: project.owner
+              }
+          }, {
+              _id: {
+                  $nin: project.contributors
+              }
+          }, {
+              _id: {
+                  $ne: Meteor.userId()
+              }
+          }]
+      });
+      var ret = [];
+      users.forEach(function (u) {
+          var user = {
+              _id: u._id,
+              email: u.emails[0].address
+          };
+          ret.push(user);
+      });
+      return ret;
+  },
 
-Template.contributors.contributors = function () {
-    var project = Projects.findOne(Session.get('projectId'));
-    var users = Meteor.users.find({
-        $and: [{
-            _id: {
-                $in: project['contributors']
-            }
-        }, {
-            _id: {
-                $ne: Meteor.userId()
-            }
-        }]
-    });
-    var ret = [];
-    users.forEach(function (u) {
-        var contributor = {
-            '_id': u['_id'],
-            'email': u['emails'][0]['address']
-        };
-        ret.push(contributor);
-    });
-    return ret;
-};
+  contributors: function () {
+      var project = Projects.findOne(Session.get('projectId'));
+      var users = Meteor.users.find({
+          $and: [{
+              _id: {
+                  $in: project.contributors
+              }
+          }, {
+              _id: {
+                  $ne: Meteor.userId()
+              }
+          }]
+      });
+      var ret = [];
+      users.forEach(function (u) {
+          var contributor = {
+              _id: u._id,
+              email: u.emails[0].address
+          };
+          ret.push(contributor);
+      });
+      return ret;
+  }
+});
 
 Template.contributors.events({
     'click #move-users': function () {

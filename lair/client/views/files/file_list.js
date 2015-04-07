@@ -1,10 +1,12 @@
-Template.fileList.files = function () {
-    var project = Projects.findOne(Session.get('projectId'));
-    if (!project) {
-        return false;
+Template.fileList.helpers({
+    files: function () {
+        var project = Projects.findOne(Session.get('projectId'));
+        if (!project) {
+            return false;
+        }
+        return project.files.sort();
     }
-    return project.files.sort();
-};
+});
 
 Template.fileList.events({
     'submit form': function (event, tpl) {
@@ -16,13 +18,13 @@ Template.fileList.events({
         Meteor.call('addFile', projectId, name, url, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: err.reason
                 });
             }
             tpl.find('[name=file-name]').value = '';
-            return tpl.find('[name=file-url]').value = '';
+            tpl.find('[name=file-url]').value = '';
         });
     },
 

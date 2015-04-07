@@ -80,10 +80,10 @@ Meteor.methods({
 // The authorization of most, if not all changes to the database
 // is dependent on checking if the this.userId is the owner
 // or a contributor of the project document. Each document in the
-// ports, vulns, or hosts collection will have a "project_id" key.
+// ports, vulns, or hosts collection will have a 'project_id' key.
 // Most functions should take as their first argument a project doc id.
-// If changing anything besides the project collection be sure to 
-// include "project_id": id in your document specifier to prevent
+// If changing anything besides the project collection be sure to
+// include 'project_id': id in your document specifier to prevent
 // unauthorized changes. Never allow the client to specify the userid.
 //
 
@@ -93,11 +93,11 @@ Meteor.methods({
 // returns true if authorized, undefined if not.
 function authorize(id, uid) {
     return Projects.findOne({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": uid
+            'owner': uid
         }, {
-            "contributors": uid
+            'contributors': uid
         }]
     });
 }
@@ -113,8 +113,8 @@ function addProject(name, industry, description) {
         throw new Meteor.Error(400, 'Invalid project name');
     }
     if (Projects.findOne({
-            "project_name": name,
-            "owner": this.userId
+            'project_name': name,
+            'owner': this.userId
         })) {
         throw new Meteor.Error(400, 'Duplicate project name');
     }
@@ -142,17 +142,17 @@ function removeProject(id) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     Projects.remove({
-        "_id": id,
-        "owner": this.userId
+        '_id': id,
+        'owner': this.userId
     });
     Hosts.remove({
-        "project_id": id
+        'project_id': id
     });
     Ports.remove({
-        "project_id": id
+        'project_id': id
     });
     return Vulnerabilities.remove({
-        "project_id": id
+        'project_id': id
     });
 }
 
@@ -181,21 +181,21 @@ function exportProject(id, url, username, password) {
         project.username = username;
         project.password = password;
         result = HTTP.post(url, {
-            "data": project
+            'data': project
         });
     } else if (!username && password) {
         project.password = password;
         result = HTTP.post(url, {
-            "data": project
+            'data': project
         });
     } else if (username && !password) {
         project.username = username;
         result = HTTP.post(url, {
-            "data": project
+            'data': project
         });
     } else {
         result = HTTP.post(url, {
-            "data": project
+            'data': project
         });
     }
     if (result.statusCode !== 200) {
@@ -218,15 +218,15 @@ function addContributor(id, uid) {
         throw new Meteor.Error(400, 'Could not locate Meteor userId');
     }
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $addToSet: {
-            "contributors": uid
+            'contributors': uid
         }
     });
 }
@@ -245,15 +245,15 @@ function removeContributor(id, uid) {
         throw new Meteor.Error(400, 'Could not locate Meteor userId');
     }
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $pull: {
-            "contributors": uid
+            'contributors': uid
         }
     });
 }
@@ -269,8 +269,8 @@ function addProjectNote(id, title, content) {
         throw new Meteor.Error(400, 'Invalid title');
     }
     if (Projects.findOne({
-            "_id": id,
-            "notes.title": title
+            '_id': id,
+            'notes.title': title
         })) {
         throw new Meteor.Error(400, 'A note with that title already exists');
     }
@@ -281,15 +281,15 @@ function addProjectNote(id, title, content) {
     note.title = title;
     note.last_modified_by = Meteor.user().emails[0].address;
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $addToSet: {
-            "notes": note
+            'notes': note
         }
     });
 }
@@ -305,16 +305,16 @@ function removeProjectNote(id, title) {
         throw new Meteor.Error(400, 'Invalid title');
     }
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $pull: {
-            "notes": {
-                "title": title
+            'notes': {
+                'title': title
             }
         }
     });
@@ -334,17 +334,17 @@ function setProjectNoteContent(id, title, content) {
         throw new Meteor.Error(400, 'Invalid note content');
     }
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }],
-        "notes.title": title
+        'notes.title': title
     }, {
         $set: {
-            "notes.$.content": content,
-            "notes.$.last_modified_by": Meteor.user().emails[0].address
+            'notes.$.content': content,
+            'notes.$.last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -367,15 +367,15 @@ function addFile(id, name, url) {
     f.name = name;
     f.url = url;
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $addToSet: {
-            "files": f
+            'files': f
         }
     });
 }
@@ -395,17 +395,17 @@ function removeFile(id, name, url) {
         throw new Meteor.Error(400, 'Invalid url');
     }
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $pull: {
-            "files": {
-                "name": name,
-                "url": url
+            'files': {
+                'name': name,
+                'url': url
             }
         }
     });
@@ -425,15 +425,15 @@ function addMessage(id, msg) {
     message.user = Meteor.user().emails[0].address.split('@')[0];
     message.message = msg;
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $push: {
-            "messages": message
+            'messages': message
         }
     });
 }
@@ -446,15 +446,15 @@ function removeMessages(id) {
         throw new Meteor.Error(400, 'Invalid project id');
     }
     return Projects.update({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": this.userId
+            'owner': this.userId
         }, {
-            "contributors": this.userId
+            'contributors': this.userId
         }]
     }, {
         $unset: {
-            "messages": ""
+            'messages': ''
         }
     });
 }
@@ -476,8 +476,8 @@ function addHost(id, ip, mac) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     if (Hosts.findOne({
-            "string_addr": ip,
-            "project_id": id
+            'string_addr': ip,
+            'project_id': id
         })) {
         throw new Meteor.Error(400, 'Host with that IP already exists');
     }
@@ -507,12 +507,12 @@ function removeHost(id, hostId) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     Ports.remove({
-        "project_id": id,
-        "host_id": hostId
+        'project_id': id,
+        'host_id': hostId
     });
     return Hosts.remove({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     });
 }
 
@@ -533,12 +533,12 @@ function setHostStatus(id, hostId, status) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $set: {
-            "status": status,
-            "last_modified_by": Meteor.user().emails[0].address
+            'status': status,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -560,14 +560,14 @@ function addHostname(id, hostId, hostname) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $addToSet: {
-            "hostnames": hostname
+            'hostnames': hostname
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -589,14 +589,14 @@ function removeHostname(id, hostId, hostname) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $pull: {
-            "hostnames": hostname
+            'hostnames': hostname
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -618,14 +618,14 @@ function addHostTag(id, hostId, tag) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $addToSet: {
-            "tags": tag
+            'tags': tag
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -647,14 +647,14 @@ function removeHostTag(id, hostId, tag) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $pull: {
-            "tags": tag
+            'tags': tag
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -686,14 +686,14 @@ function addHostOs(id, hostId, tool, fingerprint, weight) {
     os.fingerprint = fingerprint;
     os.weight = weight;
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $addToSet: {
-            "os": os
+            'os': os
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -725,14 +725,14 @@ function removeHostOs(id, hostId, tool, fingerprint, weight) {
     os.fingerprint = fingerprint;
     os.weight = weight;
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $pull: {
-            "os": os
+            'os': os
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -754,19 +754,19 @@ function setOsWeight(id, hostId, os, weight) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId,
+        'project_id': id,
+        '_id': hostId,
         os: {
             $elemMatch: {
-                "fingerprint": os.fingerprint,
-                "weight": os.weight,
-                "tool": os.tool
+                'fingerprint': os.fingerprint,
+                'weight': os.weight,
+                'tool': os.tool
             }
         }
     }, {
         $set: {
-            "os.$.weight": weight,
-            "last_modified_by": Meteor.user().emails[0].address
+            'os.$.weight': weight,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -788,9 +788,9 @@ function addHostNote(id, hostId, title, content) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     if (Hosts.findOne({
-            "project_id": id,
-            "_id": hostId,
-            "notes.title": title
+            'project_id': id,
+            '_id': hostId,
+            'notes.title': title
         })) {
         throw new Meteor.Error(400, 'A note with that title already exists for this host');
     }
@@ -802,14 +802,14 @@ function addHostNote(id, hostId, title, content) {
     var email = Meteor.user().emails[0].address;
     note.last_modified_by = email;
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $addToSet: {
-            "notes": note
+            'notes': note
         },
         $set: {
-            "last_modified_by": email
+            'last_modified_by': email
         }
     });
 }
@@ -831,16 +831,16 @@ function removeHostNote(id, hostId, title) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $pull: {
-            "notes": {
-                "title": title
+            'notes': {
+                'title': title
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -866,14 +866,14 @@ function setHostNoteContent(id, hostId, title, content) {
     }
     var email = Meteor.user().emails[0].address;
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId,
-        "notes.title": title
+        'project_id': id,
+        '_id': hostId,
+        'notes.title': title
     }, {
         $set: {
-            "notes.$.content": content,
-            "notes.$.last_modified_by": email,
-            "last_modified_by": email
+            'notes.$.content': content,
+            'notes.$.last_modified_by': email,
+            'last_modified_by': email
         }
     });
 }
@@ -890,12 +890,12 @@ function enableHostFlag(id, hostId) {
     }
     var email = Meteor.user().emails[0].address;
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $set: {
-            "flag": true,
-            "last_modified_by": email
+            'flag': true,
+            'last_modified_by': email
         }
     });
 }
@@ -912,12 +912,12 @@ function disableHostFlag(id, hostId) {
     }
     var email = Meteor.user().emails[0].address;
     return Hosts.update({
-        "project_id": id,
-        "_id": hostId
+        'project_id': id,
+        '_id': hostId
     }, {
         $set: {
-            "flag": false,
-            "last_modified_by": email
+            'flag': false,
+            'last_modified_by': email
         }
     });
 }
@@ -949,10 +949,10 @@ function addPort(id, hostId, port, protocol, service, product) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     if (Ports.findOne({
-            "project_id": id,
-            "host_id": hostId,
-            "port": port,
-            "protocol": protocol
+            'project_id': id,
+            'host_id': hostId,
+            'port': port,
+            'protocol': protocol
         })) {
         throw new Meteor.Error(400, 'Duplicate Port');
     }
@@ -981,8 +981,8 @@ function removePort(id, portId) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Ports.remove({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     });
 }
 
@@ -998,12 +998,12 @@ function enablePortFlag(id, portId) {
     }
     var email = Meteor.user().emails[0].address;
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $set: {
-            "flag": true,
-            "last_modified_by": email
+            'flag': true,
+            'last_modified_by': email
         }
     });
 }
@@ -1020,12 +1020,12 @@ function disablePortFlag(id, portId) {
     }
     var email = Meteor.user().emails[0].address;
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $set: {
-            "flag": false,
-            "last_modified_by": email
+            'flag': false,
+            'last_modified_by': email
         }
     });
 }
@@ -1047,12 +1047,12 @@ function setPortStatus(id, portId, status) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $set: {
-            "status": status,
-            "last_modified_by": Meteor.user().emails[0].address
+            'status': status,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1074,12 +1074,12 @@ function setService(id, portId, service) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $set: {
-            "service": service,
-            "last_modified_by": Meteor.user().emails[0].address
+            'service': service,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1101,12 +1101,12 @@ function setProduct(id, portId, product) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $set: {
-            "product": product,
-            "last_modified_by": Meteor.user().emails[0].address
+            'product': product,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1134,18 +1134,18 @@ function addCredential(id, portId, username, password, hash) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $addToSet: {
-            "credentials": {
-                "username": username,
-                "password": password,
-                "hash": hash
+            'credentials': {
+                'username': username,
+                'password': password,
+                'hash': hash
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1170,17 +1170,17 @@ function removeCredential(id, portId, username, password) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $pull: {
-            "credentials": {
-                "username": username,
-                "password": password
+            'credentials': {
+                'username': username,
+                'password': password
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1202,9 +1202,9 @@ function addPortNote(id, portId, title, content) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     if (Ports.findOne({
-            "project_id": id,
-            "_id": portId,
-            "notes.title": title
+            'project_id': id,
+            '_id': portId,
+            'notes.title': title
         })) {
         throw new Meteor.Error(400, 'A note with this title already exists');
     }
@@ -1215,14 +1215,14 @@ function addPortNote(id, portId, title, content) {
     note.title = title;
     note.last_modified_by = Meteor.user().emails[0].address;
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $push: {
-            "notes": note
+            'notes': note
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1244,16 +1244,16 @@ function removePortNote(id, portId, title) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Ports.update({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     }, {
         $pull: {
-            "notes": {
-                "title": title
+            'notes': {
+                'title': title
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1278,13 +1278,13 @@ function setPortNoteContent(id, portId, title, content) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Ports.update({
-        "project_id": id,
-        "_id": portId,
-        "notes.title": title
+        'project_id': id,
+        '_id': portId,
+        'notes.title': title
     }, {
         $set: {
-            "notes.$.content": content,
-            "last_modified_by": Meteor.user().emails[0].address
+            'notes.$.content': content,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1296,7 +1296,7 @@ function addVulnerability(id, title, cvss, description, evidence, solution) {
     if (typeof id !== 'string' || !id.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid project id');
     }
-    if (typeof title !== 'string' || title === "") {
+    if (typeof title !== 'string' || title === '') {
         throw new Meteor.Error(400, 'Invalid title');
     }
     cvss = parseFloat(cvss);
@@ -1340,44 +1340,44 @@ function addServiceVulnerability(id, portId, title, cvss, description, evidence,
     if (typeof portId !== 'string' || !portId.match(/^[a-zA-Z0-9]{17,24}$/)) {
         throw new Meteor.Error(400, 'Invalid port id');
     }
-    if (typeof title !== 'string' || title === "") {
+    if (typeof title !== 'string' || title === '') {
         throw new Meteor.Error(400, 'Invalid title');
     }
     if (!authorize(id, this.userId)) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     var port = Ports.findOne({
-        "project_id": id,
-        "_id": portId
+        'project_id': id,
+        '_id': portId
     });
     if (!port) {
         throw new Meteor.Error(400, 'Port not found ' + port);
     }
     var host = Hosts.findOne({
-        "project_id": id,
-        "_id": port.host_id
+        'project_id': id,
+        '_id': port.host_id
     });
     if (!host) {
         throw new Meteor.Error(400, 'Host not found');
     }
     var vuln = Vulnerabilities.findOne({
-        "project_id": id,
-        "title": title
+        'project_id': id,
+        'title': title
     });
     if (vuln) {
         return Vulnerabilities.update({
-            "project_id": id,
-            "_id": vuln._id
+            'project_id': id,
+            '_id': vuln._id
         }, {
             $addToSet: {
-                "hosts": {
-                    "string_addr": host.string_addr,
-                    "port": port.port,
-                    "protocol": port.protocol
+                'hosts': {
+                    'string_addr': host.string_addr,
+                    'port': port.port,
+                    'protocol': port.protocol
                 }
             },
             $set: {
-                "last_modified_by": Meteor.user().emails[0].address
+                'last_modified_by': Meteor.user().emails[0].address
             }
         });
     }
@@ -1427,8 +1427,8 @@ function removeVulnerability(id, vulnId) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.remove({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     });
 }
 
@@ -1449,12 +1449,12 @@ function setVulnerabilityStatus(id, vulnId, status) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "status": status,
-            "last_modified_by": Meteor.user().emails[0].address
+            'status': status,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1476,12 +1476,12 @@ function setVulnerabilityTitle(id, vulnId, title) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "title": title,
-            "last_modified_by": Meteor.user().emails[0].address
+            'title': title,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1503,12 +1503,12 @@ function setVulnerabilityDescription(id, vulnId, description) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "description": description,
-            "last_modified_by": Meteor.user().emails[0].address
+            'description': description,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1530,12 +1530,12 @@ function setVulnerabilityEvidence(id, vulnId, evidence) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "evidence": evidence,
-            "last_modified_by": Meteor.user().emails[0].address
+            'evidence': evidence,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1557,12 +1557,12 @@ function setVulnerabilitySolution(id, vulnId, solution) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "solution": solution,
-            "last_modified_by": Meteor.user().emails[0].address
+            'solution': solution,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1585,12 +1585,12 @@ function setVulnerabilityCvss(id, vulnId, cvss) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "cvss": cvss,
-            "last_modified_by": Meteor.user().emails[0].address
+            'cvss': cvss,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1618,14 +1618,14 @@ function addVulnerabilityNote(id, vulnId, title, content) {
     note.title = title;
     note.last_modified_by = Meteor.user().emails[0].address;
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $push: {
-            "notes": note
+            'notes': note
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1647,16 +1647,16 @@ function removeVulnerabilityNote(id, vulnId, title) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $pull: {
-            "notes": {
-                "title": title
+            'notes': {
+                'title': title
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1681,13 +1681,13 @@ function setVulnerabilityNoteContent(id, vulnId, title, content) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId,
-        "notes.title": title
+        'project_id': id,
+        '_id': vulnId,
+        'notes.title': title
     }, {
         $set: {
-            "notes.$.content": content,
-            "last_modified_by": Meteor.user().emails[0].address
+            'notes.$.content': content,
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1715,11 +1715,11 @@ function addHostToVulnerability(id, vulnId, ip, port, protocol) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     var host = Hosts.findOne({
-        "project_id": id,
-        "string_addr": ip
+        'project_id': id,
+        'string_addr': ip
     }, {
         fields: {
-            "_id": 1
+            '_id': 1
         }
     });
     if (!host) {
@@ -1727,26 +1727,26 @@ function addHostToVulnerability(id, vulnId, ip, port, protocol) {
     }
     hostId = host._id;
     if (!Ports.findOne({
-            "project_id": id,
-            "host_id": hostId,
-            "port": port,
-            "protocol": protocol
+            'project_id': id,
+            'host_id': hostId,
+            'port': port,
+            'protocol': protocol
         })) {
         throw new Meteor.Error(400, 'Port not found');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $addToSet: {
-            "hosts": {
-                "string_addr": ip,
-                "port": port,
-                "protocol": protocol
+            'hosts': {
+                'string_addr': ip,
+                'port': port,
+                'protocol': protocol
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1774,18 +1774,18 @@ function removeHostFromVulnerability(id, vulnId, ip, port, protocol) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $pull: {
-            "hosts": {
-                "string_addr": ip,
-                "port": port,
-                "protocol": protocol
+            'hosts': {
+                'string_addr': ip,
+                'port': port,
+                'protocol': protocol
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1804,15 +1804,15 @@ function removeHostFromVulnerabilities(id, ip) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id
+        'project_id': id
     }, {
         $pull: {
-            "hosts": {
-                "string_addr": ip
+            'hosts': {
+                'string_addr': ip
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     }, {
         multi: true
@@ -1839,17 +1839,17 @@ function removePortFromVulnerabilities(id, ip, port, protocol) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id
+        'project_id': id
     }, {
         $pull: {
-            "hosts": {
-                "string_addr": ip,
-                "port": port,
-                "protocol": protocol
+            'hosts': {
+                'string_addr': ip,
+                'port': port,
+                'protocol': protocol
             }
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     }, {
         multi: true
@@ -1873,14 +1873,14 @@ function addCve(id, vulnId, cve) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $addToSet: {
-            "cves": cve
+            'cves': cve
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1902,14 +1902,14 @@ function removeCve(id, vulnId, cve) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $pull: {
-            "cves": cve
+            'cves': cve
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1931,14 +1931,14 @@ function addVulnerabilityTag(id, vulnId, tag) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $addToSet: {
-            "tags": tag
+            'tags': tag
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1960,14 +1960,14 @@ function removeVulnerabilityTag(id, vulnId, tag) {
         throw new Meteor.Error(403, 'Access Denied');
     }
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $pull: {
-            "tags": tag
+            'tags': tag
         },
         $set: {
-            "last_modified_by": Meteor.user().emails[0].address
+            'last_modified_by': Meteor.user().emails[0].address
         }
     });
 }
@@ -1984,12 +1984,12 @@ function enableVulnerabilityFlag(id, vulnId) {
     }
     var email = Meteor.user().emails[0].address;
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "flag": true,
-            "last_modified_by": email
+            'flag': true,
+            'last_modified_by': email
         }
     });
 }
@@ -2006,12 +2006,12 @@ function disableVulnerabilityFlag(id, vulnId) {
     }
     var email = Meteor.user().emails[0].address;
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "flag": false,
-            "last_modified_by": email
+            'flag': false,
+            'last_modified_by': email
         }
     });
 }
@@ -2028,12 +2028,12 @@ function enableVulnerabilityConfirmed(id, vulnId) {
     }
     var email = Meteor.user().emails[0].address;
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "confirmed": true,
-            "last_modified_by": email
+            'confirmed': true,
+            'last_modified_by': email
         }
     });
 }
@@ -2050,12 +2050,12 @@ function disableVulnerabilityConfirmed(id, vulnId) {
     }
     var email = Meteor.user().emails[0].address;
     return Vulnerabilities.update({
-        "project_id": id,
-        "_id": vulnId
+        'project_id': id,
+        '_id': vulnId
     }, {
         $set: {
-            "confirmed": false,
-            "last_modified_by": email
+            'confirmed': false,
+            'last_modified_by': email
         }
     });
 }
@@ -2099,32 +2099,32 @@ function removeLairUser(id) {
         throw new Meteor.Error(400, 'Invalid user id');
     }
     Projects.update({
-        "contributors": id
+        'contributors': id
     }, {
         $pull: {
-            "contributors": id
+            'contributors': id
         }
     });
     var projects = Projects.find({
-        "owner": id
+        'owner': id
     }, {
         fields: {
-            "_id": 1
+            '_id': 1
         }
     }).fetch();
     projects.forEach(function (id) {
         Hosts.remove({
-            "project_id": id
+            'project_id': id
         });
         Ports.remove({
-            "project_id": id
+            'project_id': id
         });
         Vulnerabilities.remove({
-            "project_id": id
+            'project_id': id
         });
     });
     Projects.remove({
-        "owner": id
+        'owner': id
     });
     return Meteor.users.remove(id);
 }
@@ -2150,27 +2150,27 @@ function toggleClientSideUpdates() {
         throw new Meteor.Error(403, 'Access Denied');
     }
     var setting = Settings.findOne({
-        "setting": "allowClientSideUpdates"
+        'setting': 'allowClientSideUpdates'
     });
     if (typeof setting == 'undefined') {
         return Settings.insert({
-            "setting": "allowClientSideUpdates",
-            "enabled": true
+            'setting': 'allowClientSideUpdates',
+            'enabled': true
         });
     } else if (setting.enabled === false) {
         return Settings.update({
-            "setting": "allowClientSideUpdates"
+            'setting': 'allowClientSideUpdates'
         }, {
-            "$set": {
-                "enabled": true
+            '$set': {
+                'enabled': true
             }
         });
     } else {
         return Settings.update({
-            "setting": "allowClientSideUpdates"
+            'setting': 'allowClientSideUpdates'
         }, {
-            "$set": {
-                "enabled": false
+            '$set': {
+                'enabled': false
             }
         });
     }
@@ -2181,27 +2181,27 @@ function togglePersistViewFilters() {
         throw new Meteor.Error(403, 'Access Denied');
     }
     var setting = Settings.findOne({
-        "setting": "persistViewFilters"
+        'setting': 'persistViewFilters'
     });
     if (typeof setting == 'undefined') {
         return Settings.insert({
-            "setting": "persistViewFilters",
-            "enabled": true
+            'setting': 'persistViewFilters',
+            'enabled': true
         });
     } else if (setting.enabled === false) {
         return Settings.update({
-            "setting": "persistViewFilters"
+            'setting': 'persistViewFilters'
         }, {
-            "$set": {
-                "enabled": true
+            '$set': {
+                'enabled': true
             }
         });
     } else {
         return Settings.update({
-            "setting": "persistViewFilters"
+            'setting': 'persistViewFilters'
         }, {
-            "$set": {
-                "enabled": false
+            '$set': {
+                'enabled': false
             }
         });
     }

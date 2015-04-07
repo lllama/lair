@@ -12,9 +12,9 @@ Template.addHostOs.events({
         Meteor.call('addHostOs', projectId, hostId, tool, fingerprint, weight, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: err.reason
                 });
             }
             return Router.go('/project/' + projectId + '/hosts/' + hostId + '/os');

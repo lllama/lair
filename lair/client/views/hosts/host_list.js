@@ -1,118 +1,109 @@
-Template.hostList.projectId = function () {
-    return Session.get('projectId');
-};
-
-Template.hostList.moreToShow = function () {
-    if (Template.hostList.total() > Session.get('hostsViewLimit')) {
-        return true;
-    } else {
-        return false;
-    }
-};
-
-Template.hostList.start = function () {
-    var n = Session.get('hostsViewSkip') + 1;
-    if (n > Template.hostList.total()) {
-        n = Template.hostList.total();
-    }
-    return n;
-};
-
-Template.hostList.end = function () {
-    var n = Session.get('hostsViewSkip') + Session.get('hostsViewLimit');
-    if (n > Template.hostList.total())
-        n = Template.hostList.total();
-    return n;
-};
-
-Template.hostList.total = function () {
-    return Counts.findOne(Session.get('projectId')).hostCount;
-};
-
-Template.hostList.flagFilter = function () {
-    return Session.get('hostListFlagFilter');
-};
-
-Template.hostList.hosts = function () {
-    var limit = Session.get('hostsViewLimit') || 25;
-    var query = {
-        "project_id": Session.get('projectId'),
-        "status": {
-            "$in": []
+Template.hostList.helpers({
+    projectId: function () {
+        return Session.get('projectId');
+    },
+    moreToShow: function () {
+        return (total() > Session.get('hostsViewLimit'));
+    },
+    total: total,
+    start: function () {
+        var n = Session.get('hostsViewSkip') + 1;
+        if (n > Template.hostList.total()) {
+            n = Template.hostList.total();
         }
-    };
-    if (Session.equals('hostListFlagFilter', 'enabled')) {
-        query.flag = true;
-    }
-    if (!Session.equals('hostListStatusButtongrey', 'disabled')) {
-        query.status.$in.push('lair-grey');
-    }
-    if (!Session.equals('hostListStatusButtonblue', 'disabled')) {
-        query.status.$in.push('lair-blue');
-    }
-    if (!Session.equals('hostListStatusButtongreen', 'disabled')) {
-        query.status.$in.push('lair-green');
-    }
-    if (!Session.equals('hostListStatusButtonorange', 'disabled')) {
-        query.status.$in.push('lair-orange');
-    }
-    if (!Session.equals('hostListStatusButtonred', 'disabled')) {
-        query.status.$in.push('lair-red');
-    }
-    var search = Session.get('hostListSearch');
-    if (search) {
-        query.$or = [{
-            "string_addr": {
-                "$regex": search,
-                "$options": "i"
+        return n;
+    },
+    end: function () {
+        var n = Session.get('hostsViewSkip') + Session.get('hostsViewLimit');
+        if (n > Template.hostList.total())
+            n = Template.hostList.total();
+        return n;
+    },
+    flagFilter: function () {
+        return Session.get('hostListFlagFilter');
+    },
+    hosts: function () {
+        var limit = Session.get('hostsViewLimit') || 25;
+        var query = {
+            project_id: Session.get('projectId'),
+            status: {
+                $in: []
             }
-        }, {
-            "os.fingerprint": {
-                "$regex": search,
-                "$options": "i"
-            }
-        }, {
-            "hostnames": {
-                $regex: search,
-                "$options": "i"
-            }
-        }, {
-            "last_modified_by": {
-                $regex: search,
-                "$options": "i"
-            }
-        }, {
-            "tags": search
-        }];
+        };
+        if (Session.equals('hostListFlagFilter', 'enabled')) {
+            query.flag = true;
+        }
+        if (!Session.equals('hostListStatusButtongrey', 'disabled')) {
+            query.status.$in.push('lair-grey');
+        }
+        if (!Session.equals('hostListStatusButtonblue', 'disabled')) {
+            query.status.$in.push('lair-blue');
+        }
+        if (!Session.equals('hostListStatusButtongreen', 'disabled')) {
+            query.status.$in.push('lair-green');
+        }
+        if (!Session.equals('hostListStatusButtonorange', 'disabled')) {
+            query.status.$in.push('lair-orange');
+        }
+        if (!Session.equals('hostListStatusButtonred', 'disabled')) {
+            query.status.$in.push('lair-red');
+        }
+        var search = Session.get('hostListSearch');
+        if (search) {
+            query.$or = [{
+                string_addr: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                'os.fingerprint': {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                hostnames: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                last_modified_by: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                tags: search
+            }];
+        }
+        Session.set('hostQuery', query);
+        var hosts = [];
+        Hosts.find(query, {
+            sort: {
+                long_addr: 1
+            },
+            limit: limit
+        }).fetch().forEach(function (host) {
+            host.os = host.os.sort(sortFingerprint).sort(sortWeight)[0];
+            hosts.push(host);
+        });
+        return hosts;
+    },
+    searchTerm: function () {
+        return Session.get('hostListSearch');
+    },
+    hostStatusButtonActive: function (status) {
+        if (Session.equals('hostListStatusButton' + status, 'disabled')) {
+            return 'disabled';
+        }
+        return false;
+    },
+    loading: function () {
+        return Session.get('loading');
     }
-    Session.set('hostQuery', query);
-    var hosts = [];
-    Hosts.find(query, {
-        "sort": {
-            "long_addr": 1
-        },
-        "limit": limit
-    }).fetch().forEach(function (host) {
-        host.os = host.os.sort(sortFingerprint).sort(sortWeight)[0];
-        hosts.push(host);
-    });
-    return hosts;
-};
+});
 
-Template.hostList.searchTerm = function () {
-    return Session.get('hostListSearch');
-};
-
-Template.hostList.hostStatusButtonActive = function (status) {
-    if (Session.equals('hostListStatusButton' + status, 'disabled')) {
-        return 'disabled';
-    }
-    return false;
-};
-
-Template.hostList.loading = function () {
-    return Session.get('loading');
-};
+function total() {
+    return Counts.findOne(Session.get('projectId')).hostCount;
+}
 
 Template.hostList.events({
     'click .flag-enabled': function () {
@@ -175,7 +166,6 @@ Template.hostList.events({
     'click #load-more': function () {
         var previousLimit = Session.get('hostsViewLimit') || 25;
         var newLimit = previousLimit + 25;
-        //Session.set('hostsViewLimit', newLimit);
         var id = Session.get('projectId');
         var previousSkip = Session.get('hostsViewSkip') || 0;
         var newSkip = previousSkip + 25;

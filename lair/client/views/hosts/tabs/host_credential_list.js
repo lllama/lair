@@ -1,29 +1,30 @@
-Template.hostCredentialList.projectId = function () {
-    return Session.get('projectId');
-};
-
-Template.hostCredentialList.credentials = function () {
-    var projectId = Session.get('projectId');
-    var hostId = Session.get('hostId');
-    var ports = Ports.find({
-        "project_id": projectId,
-        "host_id": hostId
-    }).fetch();
-    var credentials = [];
-    ports.forEach(function (port) {
-        port.credentials.forEach(function (cred) {
-            credentials.push({
-                '_id': port._id,
-                'port': port.port,
-                'protocol': port.protocol,
-                'username': cred.username,
-                'password': cred.password,
-                'hash': cred.hash
+Template.hostCredentialList.helpers({
+    projectId: function () {
+        return Session.get('projectId');
+    },
+    credentials: function () {
+        var projectId = Session.get('projectId');
+        var hostId = Session.get('hostId');
+        var ports = Ports.find({
+            project_id: projectId,
+            host_id: hostId
+        }).fetch();
+        var credentials = [];
+        ports.forEach(function (port) {
+            port.credentials.forEach(function (cred) {
+                credentials.push({
+                    _id: port._id,
+                    port: port.port,
+                    protocol: port.protocol,
+                    username: cred.username,
+                    password: cred.password,
+                    hash: cred.hash
+                });
             });
         });
-    });
-    return credentials.sort(sortPort);
-};
+        return credentials.sort(sortPort);
+    }
+});
 
 Template.hostCredentialList.events({
     'click #remove-credentials': function () {

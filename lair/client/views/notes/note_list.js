@@ -1,22 +1,22 @@
-Template.noteList.notes = function () {
-    var project = Projects.findOne(Session.get('projectId'));
-    if (!project) {
-        return false;
+Template.noteList.helpers({
+    notes: function () {
+        var project = Projects.findOne(Session.get('projectId'));
+        if (!project) {
+            return false;
+        }
+        return project.notes.sort(sortTitle);
+    },
+    note: function () {
+        if (Session.equals('noteTitle', null)) {
+            return false;
+        }
+        var project = Projects.findOne(Session.get('projectId'));
+        if (!project) {
+            return false;
+        }
+        return project.notes[_.indexOf(_.pluck(project.notes, 'title'), Session.get('noteTitle'))];
     }
-    return project.notes.sort(sortTitle);
-};
-
-Template.noteList.note = function () {
-    if (Session.equals('noteTitle', null)) {
-        return false;
-    }
-    var project = Projects.findOne(Session.get('projectId'));
-    if (!project) {
-        return false;
-    }
-    return project.notes[_.indexOf(_.pluck(project.notes, 'title'), Session.get('noteTitle'))];
-};
-
+});
 
 Template.noteList.events({
     'submit form': function (event, tpl) {
@@ -29,15 +29,15 @@ Template.noteList.events({
             Meteor.call('addProjectNote', Session.get('projectId'), title, content, function (err) {
                 if (err) {
                     return Alerts.insert({
-                        "class": "alert-warning",
-                        "strong": "Error",
-                        "message": err.reason
+                        class: 'alert-warning',
+                        strong: 'Error',
+                        message: err.reason
                     });
                 }
                 Alerts.insert({
-                    "class": "alert-success",
-                    "strong": "Success",
-                    "message": "Note saved"
+                    class: 'alert-success',
+                    strong: 'Success',
+                    message: 'Note saved'
                 });
                 return Session.set('noteTitle', title);
             });
@@ -46,15 +46,15 @@ Template.noteList.events({
             Meteor.call('setProjectNoteContent', projectId, Session.get('noteTitle'), content, function (err) {
                 if (err) {
                     return Alerts.insert({
-                        "class": "alert-warning",
-                        "strong": "Error",
-                        "message": err.reason
+                        class: 'alert-warning',
+                        strong: 'Error',
+                        message: err.reason
                     });
                 }
                 return Alerts.insert({
-                    "class": "alert-success",
-                    "strong": "Success",
-                    "message": "Note saved"
+                    class: 'alert-success',
+                    strong: 'Success',
+                    message: 'Note saved'
                 });
             });
         }

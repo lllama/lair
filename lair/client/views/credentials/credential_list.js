@@ -1,32 +1,33 @@
-Template.credentialList.projectId = function () {
-    return Session.get('projectId');
-};
-
-Template.credentialList.credentials = function () {
-    var projectId = Session.get('projectId');
-    var ports = Ports.find({
-        "project_id": projectId
-    }).fetch();
-    var credentials = [];
-    ports.forEach(function (port) {
-        if (typeof port.credentials !== 'undefined' && port.credentials.length > 0) {
-            var host = Hosts.findOne(port.host_id);
-            port.credentials.forEach(function (cred) {
-                credentials.push({
-                    '_id': port._id,
-                    'port': port.port,
-                    'protocol': port.protocol,
-                    'username': cred.username,
-                    'password': cred.password,
-                    'hash': cred.hash,
-                    'string_addr': host.string_addr,
-                    'host_id': host._id
+Template.credentialList.helpers({
+    projectId: function () {
+        return Session.get('projectId');
+    },
+    credentials: function () {
+        var projectId = Session.get('projectId');
+        var ports = Ports.find({
+            project_id: projectId
+        }).fetch();
+        var credentials = [];
+        ports.forEach(function (port) {
+            if (typeof port.credentials !== 'undefined' && port.credentials.length > 0) {
+                var host = Hosts.findOne(port.host_id);
+                port.credentials.forEach(function (cred) {
+                    credentials.push({
+                        _id: port._id,
+                        port: port.port,
+                        protocol: port.protocol,
+                        username: cred.username,
+                        password: cred.password,
+                        hash: cred.hash,
+                        string_addr: host.string_addr,
+                        host_id: host._id
+                    });
                 });
-            });
-        }
-    });
-    return credentials.sort(sortPort);
-};
+            }
+        });
+        return credentials.sort(sortPort);
+    }
+});
 
 Template.credentialList.events({
     'click #remove-credentials': function () {

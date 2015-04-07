@@ -2,6 +2,6 @@
 Meteor.startup(function () {
     Versions.remove({});
     Versions.insert({
-        "version": DOC_VERSION
+        version: DOC_VERSION
     });
 });

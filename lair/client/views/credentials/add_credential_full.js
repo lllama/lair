@@ -5,26 +5,26 @@ Template.addCredentialFull.events({
         var ip = tpl.find('[name=host]').value;
         var p = tpl.find('[name=port]').value;
         var host = Hosts.findOne({
-            "project_id": projectId,
-            "string_addr": ip
+            project_id: projectId,
+            string_addr: ip
         });
         if (typeof host === 'undefined') {
             return Alerts.insert({
-                "class": "alert-warning",
-                "strong": "Error",
-                "message": "The host provided doesn't exist"
+                class: 'alert-warning',
+                strong: 'Error',
+                message: 'The host provided does not exist'
             });
         }
         var port = Ports.findOne({
-            "project_id": projectId,
-            "host_id": host._id,
-            "port": parseInt(p)
+            project_id: projectId,
+            host_id: host._id,
+            port: parseInt(p)
         });
         if (typeof port === 'undefined') {
             return Alerts.insert({
-                "class": "alert-warning",
-                "strong": "Error",
-                "message": "The port provided doesn't exist"
+                class: 'alert-warning',
+                strong: 'Error',
+                message: 'The port provided does not exist'
             });
         }
         var username = tpl.find('[name=username]').value || 'unknown';
@@ -33,9 +33,9 @@ Template.addCredentialFull.events({
         Meteor.call('addCredential', projectId, port._id, username, password, hash, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: err.reason
                 });
             }
             return Router.go('/project/' + projectId + '/credentials');

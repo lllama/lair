@@ -1,52 +1,52 @@
-Template.hostNoteList.notes = function () {
-    var projectId = Session.get('projectId');
-    var host = Hosts.findOne(Session.get('hostId'));
-    if (!host) {
-        return false;
-    }
-    var ports = Ports.find({
-        "project_id": projectId,
-        "host_id": host._id
-    }).fetch();
-    var notes = host.notes;
-    ports.forEach(function (port) {
-        port.notes.forEach(function (note) {
-            var portNote = note;
-            portNote.port = port.port;
-            portNote.protocol = port.protocol;
-            portNote.id = port._id;
-            notes.push(portNote);
-        });
-    });
-    return notes.sort(sortTitle);
-};
-
-Template.hostNoteList.note = function () {
-    if (Session.equals('noteTitle', null)) {
-        return false;
-    }
-    if (Session.equals('portId', null)) {
+Template.hostNoteList.helpers({
+    notes: function () {
+        var projectId = Session.get('projectId');
         var host = Hosts.findOne(Session.get('hostId'));
         if (!host) {
             return false;
         }
-        return host.notes[_.indexOf(_.pluck(host.notes, 'title'), Session.get('noteTitle'))];
-    } else {
-        var port = Ports.findOne({
-            "_id": Session.get('portId'),
-            "host_id": Session.get('hostId')
+        var ports = Ports.find({
+            'project_id': projectId,
+            'host_id': host._id
+        }).fetch();
+        var notes = host.notes;
+        ports.forEach(function (port) {
+            port.notes.forEach(function (note) {
+                var portNote = note;
+                portNote.port = port.port;
+                portNote.protocol = port.protocol;
+                portNote.id = port._id;
+                notes.push(portNote);
+            });
         });
-        if (!port) {
+        return notes.sort(sortTitle);
+    },
+    note: function () {
+        if (Session.equals('noteTitle', null)) {
             return false;
         }
-        var p = port.notes[_.indexOf(_.pluck(port.notes, 'title'), Session.get('noteTitle'))];
-        p.port = port.port;
-        p.protocol = port.protocol;
-        p.id = port._id;
-        return p;
+        if (Session.equals('portId', null)) {
+            var host = Hosts.findOne(Session.get('hostId'));
+            if (!host) {
+                return false;
+            }
+            return host.notes[_.indexOf(_.pluck(host.notes, 'title'), Session.get('noteTitle'))];
+        } else {
+            var port = Ports.findOne({
+                '_id': Session.get('portId'),
+                'host_id': Session.get('hostId')
+            });
+            if (!port) {
+                return false;
+            }
+            var p = port.notes[_.indexOf(_.pluck(port.notes, 'title'), Session.get('noteTitle'))];
+            p.port = port.port;
+            p.protocol = port.protocol;
+            p.id = port._id;
+            return p;
+        }
     }
-};
-
+});
 
 Template.hostNoteList.events({
     'submit form': function (event, tpl) {
@@ -62,18 +62,18 @@ Template.hostNoteList.events({
             content = tpl.find('[name=content]').value;
             if ((port !== '' && protocol === '') || (port === '' && protocol !== '')) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": "Missing required field"
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: 'Missing required field'
                 });
             }
             if (port !== '') {
                 port = parseInt(port);
                 if (isNaN(port) || port > 655535 || port < 0) {
                     return Alerts.insert({
-                        "class": "alert-warning",
-                        "strong": "Error",
-                        "message": "Invalid port number"
+                        class: 'alert-warning',
+                        strong: 'Error',
+                        message: 'Invalid port number'
                     });
                 }
                 port = Ports.findOne({
@@ -83,23 +83,23 @@ Template.hostNoteList.events({
                 });
                 if (!port) {
                     return Alerts.insert({
-                        "class": "alert-warning",
-                        "strong": "Error",
-                        "message": "Service not found for host"
+                        class: 'alert-warning',
+                        strong: 'Error',
+                        message: 'Service not found for host'
                     });
                 }
                 Meteor.call('addPortNote', Session.get('projectId'), port._id, title, content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-warning",
-                            "strong": "Error",
-                            "message": err.reason
+                            class: 'alert-warning',
+                            strong: 'Error',
+                            message: err.reason
                         });
                     }
                     Alerts.insert({
-                        "class": "alert-success",
-                        "strong": "Success",
-                        "message": "Note saved"
+                        class: 'alert-success',
+                        strong: 'Success',
+                        message: 'Note saved'
                     });
                     Session.set('portId', port._id);
                     return Session.set('noteTitle', title);
@@ -108,15 +108,15 @@ Template.hostNoteList.events({
                 Meteor.call('addHostNote', Session.get('projectId'), Session.get('hostId'), title, content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-warning",
-                            "strong": "Error",
-                            "message": err.reason
+                            class: 'alert-warning',
+                            strong: 'Error',
+                            message: err.reason
                         });
                     }
                     Alerts.insert({
-                        "class": "alert-success",
-                        "strong": "Success",
-                        "message": "Note saved"
+                        class: 'alert-success',
+                        strong: 'Success',
+                        message: 'Note saved'
                     });
                     return Session.set('noteTitle', title);
                 });
@@ -127,30 +127,30 @@ Template.hostNoteList.events({
                 Meteor.call('setHostNoteContent', projectId, hostId, Session.get('noteTitle'), content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-warning",
-                            "strong": "Error",
-                            "message": err.reason
+                            class: 'alert-warning',
+                            strong: 'Error',
+                            message: err.reason
                         });
                     }
                     return Alerts.insert({
-                        "class": "alert-success",
-                        "strong": "Success",
-                        "message": "Note saved"
+                        class: 'alert-success',
+                        strong: 'Success',
+                        message: 'Note saved'
                     });
                 });
             } else {
                 Meteor.call('setPortNoteContent', projectId, portId, Session.get('noteTitle'), content, function (err) {
                     if (err) {
                         return Alerts.insert({
-                            "class": "alert-warning",
-                            "strong": "Error",
-                            "message": err.reason
+                            class: 'alert-warning',
+                            strong: 'Error',
+                            message: err.reason
                         });
                     }
                     return Alerts.insert({
-                        "class": "alert-success",
-                        "strong": "Success",
-                        "message": "Note saved"
+                        class: 'alert-success',
+                        strong: 'Success',
+                        message: 'Note saved'
                     });
                 });
             }

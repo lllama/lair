@@ -1,17 +1,18 @@
-Template.hostOsList.projectId = function () {
-    return Session.get('projectId');
-};
-Template.hostOsList.hostId = function () {
-    return Session.get('hostId');
-};
-
-Template.hostOsList.fingerprints = function () {
-    var host = Hosts.findOne(Session.get('hostId'));
-    if (!host) {
-        return false;
+Template.hostOsList.helpers({
+    projectId: function () {
+        return Session.get('projectId');
+    },
+    hostId: function () {
+        return Session.get('hostId');
+    },
+    fingerprints: function () {
+        var host = Hosts.findOne(Session.get('hostId'));
+        if (!host) {
+            return false;
+        }
+        return host.os.sort(sortFingerprint).sort(sortWeight);
     }
-    return host.os.sort(sortFingerprint).sort(sortWeight);
-};
+});
 
 Template.hostOsList.events({
     'click #remove-fingerprints': function () {

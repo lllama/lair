@@ -10,9 +10,9 @@ Template.addPort.events({
         Meteor.call('addPort', id, hid, port, protocol, service, product, function (err, res) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: err.reason
                 });
             }
             return Router.go('/project/' + id + '/services/' + res);

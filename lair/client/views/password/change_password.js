@@ -5,9 +5,9 @@ Template.changePassword.events({
         Meteor.call('changeLairUserPassword', Meteor.userId(), password, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: err.reason
                 });
             }
             return Router.go('/');

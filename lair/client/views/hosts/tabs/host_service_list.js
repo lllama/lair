@@ -1,104 +1,97 @@
-Template.hostServiceList.projectId = function () {
-    return Session.get('projectId');
-};
-
-Template.hostServiceList.hostId = function () {
-    return Session.get('hostId');
-};
-
-Template.hostServiceList.moreToShow = function () {
-    if (Template.hostServiceList.total() > Session.get('hostServiceLimit')) {
-        return true;
-    } else {
+Template.hostServiceList.helpers({
+    projectId: function () {
+        return Session.get('projectId');
+    },
+    hostId: function () {
+        return Session.get('hostId');
+    },
+    moreToShow: function () {
+        return (Template.hostServiceList.total() > Session.get('hostServiceLimit'));
+    },
+    total: total,
+    flagFilter: function () {
+        return Session.get('portListFlagFilter');
+    },
+    services: function () {
+        var limit = Session.get('hostServiceLimit') || 25;
+        var query = {
+            project_id: Session.get('projectId'),
+            host_id: Session.get('hostId'),
+            status: {
+                $in: []
+            }
+        };
+        if (Session.equals('portListFlagFilter', 'enabled')) {
+            query.flag = true;
+        }
+        if (!Session.equals('portListStatusButtongrey', 'disabled')) {
+            query.status.$in.push('lair-grey');
+        }
+        if (!Session.equals('portListStatusButtonblue', 'disabled')) {
+            query.status.$in.push('lair-blue');
+        }
+        if (!Session.equals('portListStatusButtongreen', 'disabled')) {
+            query.status.$in.push('lair-green');
+        }
+        if (!Session.equals('portListStatusButtonorange', 'disabled')) {
+            query.status.$in.push('lair-orange');
+        }
+        if (!Session.equals('portListStatusButtonred', 'disabled')) {
+            query.status.$in.push('lair-red');
+        }
+        var search = Session.get('portSearch');
+        if (search) {
+            query.$or = [{
+                port: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                protocol: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                service: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                product: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }, {
+                last_modified_by: {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }];
+        }
+        return Ports.find(query, {
+            limit: limit,
+            sort: {
+                port: 1
+            }
+        }).fetch();
+    },
+    searchTerm: function () {
+        return Session.get('portSearch');
+    },
+    portListStatusButtonActive: function (status) {
+        if (Session.equals('portListStatusButton' + status, 'disabled')) {
+            return 'disabled';
+        }
         return false;
     }
-};
+});
 
-Template.hostServiceList.total = function () {
+function total() {
     return Ports.find({
-        "project_id": Session.get('projectId'),
-        "host_id": Session.get('hostId')
+        project_id: Session.get('projectId'),
+        host_id: Session.get('hostId')
     }).count();
-};
-
-Template.hostServiceList.flagFilter = function () {
-    return Session.get('portListFlagFilter');
-};
-
-Template.hostServiceList.services = function () {
-    var limit = Session.get('hostServiceLimit') || 25;
-    var query = {
-        "project_id": Session.get('projectId'),
-        "host_id": Session.get('hostId'),
-        "status": {
-            "$in": []
-        }
-    };
-    if (Session.equals('portListFlagFilter', 'enabled')) {
-        query.flag = true;
-    }
-    if (!Session.equals('portListStatusButtongrey', 'disabled')) {
-        query.status.$in.push('lair-grey');
-    }
-    if (!Session.equals('portListStatusButtonblue', 'disabled')) {
-        query.status.$in.push('lair-blue');
-    }
-    if (!Session.equals('portListStatusButtongreen', 'disabled')) {
-        query.status.$in.push('lair-green');
-    }
-    if (!Session.equals('portListStatusButtonorange', 'disabled')) {
-        query.status.$in.push('lair-orange');
-    }
-    if (!Session.equals('portListStatusButtonred', 'disabled')) {
-        query.status.$in.push('lair-red');
-    }
-    var search = Session.get('portSearch');
-    if (search) {
-        query.$or = [{
-            "port": {
-                "$regex": search,
-                "$options": "i"
-            }
-        }, {
-            "protocol": {
-                "$regex": search,
-                "$options": "i"
-            }
-        }, {
-            "service": {
-                $regex: search,
-                "$options": "i"
-            }
-        }, {
-            "product": {
-                $regex: search,
-                "$options": "i"
-            }
-        }, {
-            "last_modified_by": {
-                $regex: search,
-                "$options": "i"
-            }
-        }];
-    }
-    return Ports.find(query, {
-        "limit": limit,
-        sort: {
-            "port": 1
-        }
-    }).fetch();
-};
-
-Template.hostServiceList.searchTerm = function () {
-    return Session.get('portSearch');
-};
-
-Template.hostServiceList.portListStatusButtonActive = function (status) {
-    if (Session.equals('portListStatusButton' + status, 'disabled')) {
-        return 'disabled';
-    }
-    return false;
-};
+}
 
 Template.hostServiceList.events({
     'click .flag-enabled': function () {

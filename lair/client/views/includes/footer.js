@@ -1,3 +1,5 @@
-Template.footer.version = function () {
-    return VERSION;
-};
+Template.footer.helpers({
+    version = function () {
+        return VERSION;
+    }
+});

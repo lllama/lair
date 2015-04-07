@@ -1,26 +1,28 @@
-Template.serviceGist.projectId = function () {
-    return Session.get('projectId');
-};
+Template.serviceGist.helpers({
+    projectId: function () {
+        return Session.get('projectId');
+    },
 
-Template.serviceGist.port = function () {
-    var projectId = Session.get('projectId');
-    var port = Ports.findOne({
-        "project_id": projectId,
-        "_id": Session.get('portId')
-    });
-    if (!port) {
-        return {};
-    }
-    var host = Hosts.findOne({
-        "project_id": projectId,
-        "_id": port.host_id
-    });
-    if (!host) {
+    port: function () {
+        var projectId = Session.get('projectId');
+        var port = Ports.findOne({
+            project_id: projectId,
+            _id: Session.get('portId')
+        });
+        if (!port) {
+            return {};
+        }
+        var host = Hosts.findOne({
+            project_id: projectId,
+            _id: port.host_id
+        });
+        if (!host) {
+            return port;
+        }
+        port.string_addr = host.string_addr;
         return port;
     }
-    port.string_addr = host.string_addr;
-    return port;
-};
+});
 
 Template.serviceGist.events({
     'click .flag-enabled': function () {
@@ -43,16 +45,16 @@ Template.serviceGist.events({
         var projectId = Session.get('projectId');
         var portId = Session.get('portId');
         var port = Ports.findOne({
-            "project_id": projectId,
-            "_id": portId
+            project_id: projectId,
+            _id: portId
         });
         var hostId = port.host_id;
         var ports = Ports.find({
-            "host_id": hostId,
-            "project_id": projectId
+            host_id: hostId,
+            project_id: projectId
         }).fetch();
         ports.sort(sortPort);
-        var i = _.indexOf(_.pluck(ports, '_id'), portId) - 1;
+        var i = _.indexOf(_.pluck(ports, _id), portId) - 1;
         if (i < 0) {
             i = ports.length - 1;
         }
@@ -63,16 +65,16 @@ Template.serviceGist.events({
         var projectId = Session.get('projectId');
         var portId = Session.get('portId');
         var port = Ports.findOne({
-            "project_id": projectId,
-            "_id": portId
+            project_id: projectId,
+            _id: portId
         });
         var hostId = port.host_id;
         var ports = Ports.find({
-            "host_id": hostId,
-            "project_id": projectId
+            host_id: hostId,
+            project_id: projectId
         }).fetch();
         ports.sort(sortPort);
-        var i = _.indexOf(_.pluck(ports, '_id'), portId) + 1;
+        var i = _.indexOf(_.pluck(ports, _id), portId) + 1;
         if (i >= ports.length) {
             i = 0;
         }

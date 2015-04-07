@@ -4,13 +4,13 @@
 // be removed
 addVulnRating = function (v) {
     if (v.cvss >= 7.0) {
-        v.rating = "high";
+        v.rating = 'high';
     } else if (v.cvss >= 4.0 && v.cvss < 7.0) {
-        v.rating = "medium";
+        v.rating = 'medium';
     } else if (v.cvss < 4.0) {
-        v.rating = "low";
+        v.rating = 'low';
     } else {
-        v.rating = "";
+        v.rating = '';
     }
     return v;
 };

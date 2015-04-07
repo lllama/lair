@@ -6,14 +6,14 @@ prepareExport = function (id) {
         return {};
     }
     var hosts = Hosts.find({
-        "project_id": id
+        project_id: id
     }).fetch() || [];
     var vulnerabilities = Vulnerabilities.find({
-        "project_id": id
+        project_id: id
     }).fetch() || [];
     hosts.forEach(function (host) {
         host.ports = Ports.find({
-            "host_id": host._id
+            host_id: host._id
         }).fetch();
     });
     project.hosts = hosts;

@@ -1,13 +1,15 @@
-Template.hostTagList.tags = function () {
-    var host = Hosts.findOne({
-        "project_id": Session.get('projectId'),
-        "_id": Session.get('hostId')
-    });
-    if (!host) {
-        return false;
+Template.hostTagList.helpers({
+    tags: function () {
+        var host = Hosts.findOne({
+            project_id: Session.get('projectId'),
+            _id: Session.get('hostId')
+        });
+        if (!host) {
+            return false;
+        }
+        return host.tags;
     }
-    return host.tags;
-};
+});
 
 Template.hostTagList.events({
     'submit form': function (event, tpl) {
@@ -18,9 +20,9 @@ Template.hostTagList.events({
         Meteor.call('addHostTag', projectId, hostId, tag, function (err) {
             if (err) {
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: err.reason
                 });
             }
             tpl.find('[name=tag]').value = '';

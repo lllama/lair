@@ -1,27 +1,29 @@
-Template.chat.messages = function () {
-    var project = Projects.findOne(Session.get("projectId"));
-    if (!project) {
-        return [];
-    }
-    if (!project.messages) {
-        return [];
-    }
-    return project.messages;
-};
+Template.chat.helpers({
+    messages: function () {
+        var project = Projects.findOne(Session.get("projectId"));
+        if (!project) {
+            return [];
+        }
+        if (!project.messages) {
+            return [];
+        }
+        return project.messages;
+    },
 
-Template.chat.isChatMinimized = function () {
-    return Session.get('chatMinimized');
-};
+    isChatMinimized: function () {
+        return Session.get('chatMinimized');
+    },
 
-Template.chat.rendered = function () {
-    // scroll to the bottom of the div to see the latest messages
-    var objDiv = document.getElementById("chat-content");
-    objDiv.scrollTop = objDiv.scrollHeight;
-    if (Session.equals('chatMinimized', true)) {
-        $('#chat-content').hide();
-        $('#chat-message').hide();
+    rendered: function () {
+        // scroll to the bottom of the div to see the latest messages
+        var objDiv = document.getElementById("chat-content");
+        objDiv.scrollTop = objDiv.scrollHeight;
+        if (Session.equals('chatMinimized', true)) {
+            $('#chat-content').hide();
+            $('#chat-message').hide();
+        }
     }
-};
+});
 
 Template.chat.events({
     'click #minimize-chat': function () {

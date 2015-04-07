@@ -14,22 +14,22 @@ var opts = {
 Projects.allow({
     insert: function (userId, doc) {
         var allow = Settings.findOne({
-            "setting": "allowClientSideUpdates",
-            "enabled": true
+            'setting': 'allowClientSideUpdates',
+            'enabled': true
         });
         return (allow && userId && (doc.owner === userId || doc.contributors.indexOf(userId) !== -1));
     },
     update: function (userId, doc) {
         var allow = Settings.findOne({
-            "setting": "allowClientSideUpdates",
-            "enabled": true
+            'setting': 'allowClientSideUpdates',
+            'enabled': true
         });
         return (allow && userId && (doc.owner === userId || doc.contributors.indexOf(userId) !== -1));
     },
     remove: function (userId, doc) {
         var allow = Settings.findOne({
-            "setting": "allowClientSideUpdates",
-            "enabled": true
+            'setting': 'allowClientSideUpdates',
+            'enabled': true
         });
         return (allow && userId && (doc.owner === userId || doc.contributors.indexOf(userId) !== -1));
     },
@@ -42,16 +42,16 @@ Vulnerabilities.allow(opts);
 
 function authorize(id, uid) {
     var p = Projects.findOne({
-        "_id": id,
+        '_id': id,
         $or: [{
-            "owner": uid
+            'owner': uid
         }, {
-            "contributors": uid
+            'contributors': uid
         }]
     });
     var allow = Settings.findOne({
-        "setting": "allowClientSideUpdates",
-        "enabled": true
+        'setting': 'allowClientSideUpdates',
+        'enabled': true
     });
     return (p && allow);
 }

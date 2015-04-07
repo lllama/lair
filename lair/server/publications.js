@@ -80,7 +80,7 @@ Meteor.publish('counts', function (projectId, hostQuery, vulnQuery) {
                         'status': 1
                     }
                 });
-                hostStatus[host.status] ++;
+                hostStatus[host.status]++;
                 if (!initializing) {
                     self.changed('counts', projectId, {
                         hostCount: hostCount
@@ -193,7 +193,7 @@ Meteor.publish('counts', function (projectId, hostQuery, vulnQuery) {
                         'status': 1
                     }
                 });
-                vulnStatus[vuln.status] ++;
+                vulnStatus[vuln.status]++;
                 if (!initializing) {
                     self.changed('counts', projectId, {
                         vulnCount: vulnCount
