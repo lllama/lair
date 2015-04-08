@@ -11,6 +11,7 @@ Template.chat.helpers({
     },
 
     isChatMinimized: function () {
+        console.log(Session.get('chatMinimized'));
         return Session.get('chatMinimized');
     },
 

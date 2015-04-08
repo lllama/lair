@@ -9,6 +9,7 @@
             <h3> Messages</h3>
             <span class="pull-right hover-hand" id="minimize-chat"><i class="fa fa-minus"></i></span> {{/if}}
         </div>
+        {{#unless isChatMinimized}}
         <div id="chat-content">
             {{#each messages}}
             <div class="message">
@@ -20,5 +21,6 @@
         <div id="chat-message">
             <textarea id="chat-new-message" rows="1" placeholder="New message"></textarea>
         </div>
+        {{/unless}}
     </div>
 </template>
