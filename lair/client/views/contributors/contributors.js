@@ -1,6 +1,9 @@
 Template.contributors.helpers({
   users: function () {
       var project = Projects.findOne(Session.get('projectId'));
+      if (!project) {
+          return [];
+      }
       var users = Meteor.users.find({
           $and: [{
               _id: {
@@ -29,6 +32,9 @@ Template.contributors.helpers({
 
   contributors: function () {
       var project = Projects.findOne(Session.get('projectId'));
+      if (!project) {
+          return [];
+      }
       var users = Meteor.users.find({
           $and: [{
               _id: {
