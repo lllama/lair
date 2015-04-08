@@ -2,8 +2,8 @@
     {{#if projectId}} 
         {{> projectDetail}}
     {{else}}
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-xs-12">
             <p class="large-font">No project selected</p>
         </div>
     </div>
@@ -20,8 +20,8 @@
           {{/if}}
         </span>
     </p>
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-xs-12">
             <ul class="unstyled">
                 <li><strong>Created on: </strong>{{creation_date}}</li>
                 <li><strong>Owner: </strong>{{owner}}</li>
@@ -46,11 +46,11 @@
             <p>A local download can be performed by selecting the "Download" button below.</p>
             <br />
             <form style="text-align: center">
-                <input type="text" class="span7" name="url" placeholder="HTTP(s) listener *Required" />
+                <input type="text" class="col-xs-7" name="url" placeholder="HTTP(s) listener *Required" />
                 <br />
-                <input type="text" class="span7" name="username" placeholder="Username" />
+                <input type="text" class="col-xs-7" name="username" placeholder="Username" />
                 <br />
-                <input type="password" class="span7" name="password" placeholder="Password" />
+                <input type="password" class="col-xs-7" name="password" placeholder="Password" />
             </form>
         </div>
         <div class="modal-footer">
