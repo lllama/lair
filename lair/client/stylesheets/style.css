@@ -1,7 +1,6 @@
 .navbar-static-top {
     margin-bottom: 19px;
 }
-
 .hover-hand {
     cursor: pointer!important;
 }
@@ -23,22 +22,19 @@
 .flag-filter {
     border-color: rgb(149, 149, 149) !important;
 }
-.host-status-button,
-.port-status-button,
-.vulnerability-status-button,
-.flag-filter {
+.host-status-button, .port-status-button, .vulnerability-status-button, .flag-filter {
     width: 50px;
     height: 30px;
 }
-
 /* projects */
+
 .project-li {
     border-bottom: 1px solid #e7e7e7;
     min-height: 100px;
     padding-top: 15px;
 }
-
 /* hosts */
+
 .host-li, .port-li {
     min-height: 40px;
     padding: 10px 15px 5px 15px;
@@ -49,7 +45,6 @@
 .host-li:last-child, .port-li:last-child {
     border-bottom: 1px solid;
 }
-
 .host-li-ip, .port-li-port {
     display: inline-block;
     width: 20%;
@@ -58,8 +53,8 @@
     display: inline-block;
     width: 20%;
 }
-
 /* STATUS MAPPING COLORS */
+
 .btn.disabled {
     pointer-events: inherit;
 }
@@ -70,12 +65,10 @@
 .lair-grey td {
     border-color: rgb(149, 149, 149) !important;
 }
-
 .lair-grey-li {
     border-color: rgb(149, 149, 149) !important;
     background-color: rgba(149, 149, 149, 0.20) !important;
 }
-
 .lair-blue {
     background-color: rgba(103, 194, 239, 0.58)!important;
     border-color: rgb(103, 194, 239)!important;
@@ -87,7 +80,6 @@
     border-color: rgb(103, 194, 239)!important;
     background-color: rgba(103, 194, 239, 0.20)!important;
 }
-
 .lair-green {
     background-color: rgba(128, 205, 59, 0.58)!important;
     border-color: rgb(128, 205, 59)!important;
@@ -99,7 +91,6 @@
     border-color: rgb(128, 205, 59)!important;
     background-color: rgba(128, 205, 59, 0.20)!important;
 }
-
 .lair-orange {
     background-color: rgba(250, 154, 76, 0.58)!important;
     border-color: rgb(250, 154, 76) !important;
@@ -111,7 +102,6 @@
     border-color: rgb(250, 154, 76) !important;
     background-color: rgba(250, 154, 76, 0.20) !important;
 }
-
 .lair-red {
     background-color: rgba(250, 96, 61, 0.58)!important;
     border-color: rgb(250, 96, 61)!important;
@@ -123,12 +113,10 @@
     border-color: rgb(250, 96, 61)!important;
     background-color: rgba(250, 96, 61, 0.20)!important;
 }
-
 th {
     font-weight: normal!important;
 }
-a.dontstyle:link,
-a.dontstyle:visited {
+a.dontstyle:link, a.dontstyle:visited {
     text-decoration: none;
     color: #000000;
 }
@@ -144,11 +132,9 @@ a.dontstyle:hover {
     cursor: default!important;
     background-color: #ffffff!important;
 }
-
 textarea {
     max-width: 100%;
 }
-
 .full-height {
     min-height: 100%!important;
 }
@@ -175,7 +161,6 @@ textarea {
 .new-message {
     color: #fa5a3d;
 }
-
 #chat-window {
     background: #ffffff;
     z-index: 1;
