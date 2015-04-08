@@ -1,3 +1,11 @@
+function total() {
+    var c = Counts.findOne(Session.get('projectId'));
+    if (typeof c === 'undefined') {
+        return 0;
+    }
+    return c.hostCount;
+}
+
 Template.hostList.helpers({
     projectId: function () {
         return Session.get('projectId');
@@ -8,15 +16,15 @@ Template.hostList.helpers({
     total: total,
     start: function () {
         var n = Session.get('hostsViewSkip') + 1;
-        if (n > Template.hostList.total()) {
-            n = Template.hostList.total();
+        if (n > total()) {
+            n = total();
         }
         return n;
     },
     end: function () {
         var n = Session.get('hostsViewSkip') + Session.get('hostsViewLimit');
-        if (n > Template.hostList.total())
-            n = Template.hostList.total();
+        if (n > total())
+            n = total();
         return n;
     },
     flagFilter: function () {
@@ -100,10 +108,6 @@ Template.hostList.helpers({
         return Session.get('loading');
     }
 });
-
-function total() {
-    return Counts.findOne(Session.get('projectId')).hostCount;
-}
 
 Template.hostList.events({
     'click .flag-enabled': function () {
