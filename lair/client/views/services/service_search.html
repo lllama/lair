@@ -9,15 +9,24 @@
                 <div class="col-xs-12">
                     <p>Searching returns a unique list services and associated hosts. All fields are optional and case insensitive.</p>
                     <form class="form-inline">
-                        <input name="port" class="input-small" type="number" min="0" max="65535" placeholder="Port" step="any" />
-                        <input name="protocol" class="input-small" type="text" placeholder="Protocol" />
-                        <input name="service" class="input-medium" type="text" placeholder="Service (e.g. http)" />
-                        <input name="product" class="input-medium" type="text" placeholder="Product (e.g. nginx)" />
+                        <div class="form-group">
+                            <input class="form-control" name="port" type="number" min="0" max="65535" placeholder="Port" step="any" />
+                        </div>
+                        <div class="form-group">
+                            <input name="protocol" class="form-control" type="text" placeholder="Protocol" />
+                        </div>
+                        <div class="form-group">
+                            <input name="service" class="form-control" type="text" placeholder="Service (e.g. http)" />
+                        </div>
+                        <div class="form-group">
+                            <input name="product" class="form-control" type="text" placeholder="Product (e.g. nginx)" />
+                        </div>
                         <button type="submit" id="services-submit" class="btn"><i class="fa fa-search fa-wt"></i>Search</button>
                         <button type="button" id="services-clear" class="btn"><i class="fa fa-refresh fa-wt"></i>Clear</button>
                     </form>
                 </div>
             </div>
+            <br />
             <div class="row">
                 <div class="col-xs-6">
                     <table class="table table-bordered table-striped table-hover">
