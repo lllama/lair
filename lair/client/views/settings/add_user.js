@@ -8,9 +8,9 @@ Template.addUser.events({
             if (err) {
                 tpl.find('[name=password]').value = '';
                 return Alerts.insert({
-                    "class": "alert-warning",
-                    "strong": "Error",
-                    "message": err.reason.replace(/\./g, '')
+                    class: 'alert-warning',
+                    strong: 'Error',
+                    message: err.reason.replace(/\./g, '')
                 });
             }
             return Router.go('/settings/users');
