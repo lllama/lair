@@ -1,8 +1,9 @@
 <template name="settings">
     {{> alerts}} {{> settingsNav}}
+    <br />
     <div class="row">
         <div class="col-xs-4">
-            <ul class="unstyled">
+            <ul class="list-unstyled">
                 {{#if allowClientSideUpdates}}
                 <li>
                     <button class="btn btn-primary btn-block hover-hand toggle-client-side-updates">Deny client-side updates</button>
