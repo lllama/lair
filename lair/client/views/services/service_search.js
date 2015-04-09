@@ -2,71 +2,73 @@ var hostIds = [];
 var reduced = false;
 var match = [];
 
-Template.serviceSearch.projectId = function () {
-    return Session.get('projectId');
-};
+Template.serviceSearch.helpers({
+    projectId: function () {
+        return Session.get('projectId');
+    },
 
-Template.serviceSearch.servicesWithHosts = function () {
-    if (Session.equals('servicesViewQuery', null) || Session.equals('match', null)) {
-        return null;
-    }
-    match = Session.get('match');
-    match.forEach(function (match) {
-        var host = Hosts.findOne({
-            "_id": match.host_id
+    servicesWithHosts: function () {
+        if (Session.equals('servicesViewQuery', null) || Session.equals('match', null)) {
+            return null;
+        }
+        match = Session.get('match');
+        match.forEach(function (match) {
+            var host = Hosts.findOne({
+                _id: match.host_id
+            });
+            match.string_addr = host.string_addr;
+            match.long_addr = host.long_addr;
         });
-        match.string_addr = host.string_addr;
-        match.long_addr = host.long_addr;
-    });
-    return match.sort(sortLongAddr);
-};
+        return match.sort(sortLongAddr);
+    },
 
-Template.serviceSearch.services = function () {
-    if (Session.equals('servicesViewQuery', null)) {
-        match = Ports.find({
-            "project_id": Session.get('projectId')
-        }).fetch();
-    } else {
-        match = Ports.find(Session.get('servicesViewQuery')).fetch();
-    }
-    if (!match) {
+    services: function () {
+        if (Session.equals('servicesViewQuery', null)) {
+            match = Ports.find({
+                project_id: Session.get('projectId')
+            }).fetch();
+        } else {
+            match = Ports.find(Session.get('servicesViewQuery')).fetch();
+        }
+        if (!match) {
+            Session.set('match', match);
+            return {};
+        }
+        var services = [];
+        hostIds = [];
+        Session.set('hostIds', []);
+        match.forEach(function (match) {
+            hostIds.push(match.host_id);
+            services.push({
+                port: match.port,
+                protocol: match.protocol,
+                service: match.service,
+                product: match.product
+            });
+        });
         Session.set('match', match);
-        return {};
-    }
-    var services = [];
-    hostIds = [];
-    Session.set('hostIds', []);
-    match.forEach(function (match) {
-        hostIds.push(match.host_id);
-        services.push({
-            "port": match.port,
-            "protocol": match.protocol,
-            "service": match.service,
-            "product": match.product
+        Session.set('hostIds', hostIds);
+        return unique(services);
+    },
+
+    rendered: function () {
+        Deps.autorun(function () {
+            if (!Session.equals('hostIds', null)) {
+                return $('#host-textarea').height($('#host-textarea')[0].scrollHeight);
+            }
         });
-    });
-    Session.set('match', match);
-    Session.set('hostIds', hostIds);
-    return unique(services);
-};
+    },
 
-Template.serviceSearchHostList.rendered = function () {
-    Deps.autorun(function () {
-        if (!Session.equals('hostIds', null)) {
-            return $('#host-textarea').height($('#host-textarea')[0].scrollHeight);
-        }
-    });
-};
+    hosts: function () {
+        var hosts = Hosts.find({
+            _id: {
+                $in: _.uniq(Session.get('hostIds'))
+            }
+        }).fetch();
+        return _.pluck(hosts, 'string_addr').join('\n');
+    }
 
-Template.serviceSearchHostList.hosts = function () {
-    var hosts = Hosts.find({
-        "_id": {
-            "$in": _.uniq(Session.get('hostIds'))
-        }
-    }).fetch();
-    return _.pluck(hosts, 'string_addr').join('\n');
-};
-
+});
 Template.serviceSearch.events({
     'submit form': function (event, tpl) {
         event.preventDefault();
@@ -75,27 +77,27 @@ Template.serviceSearch.events({
         var service = escapeRegex(tpl.find('[name=service]').value);
         var product = escapeRegex(tpl.find('[name=product]').value);
         var query = {
-            "project_id": Session.get('projectId')
+            project_id: Session.get('projectId')
         };
         if (port && !isNaN(port)) {
             query.port = port;
         }
         if (protocol) {
             query.protocol = {
-                "$regex": protocol,
-                "$options": 'i'
+                $regex: protocol,
+                $options: 'i'
             };
         }
         if (service) {
             query.service = {
-                "$regex": service,
-                "$options": 'i'
+                $regex: service,
+                $options: 'i'
             };
         }
         if (product) {
             query.product = {
-                "$regex": product,
-                "$options": 'i'
+                $regex: product,
+                $options: 'i'
             };
         }
         return Session.set('servicesViewQuery', query);
@@ -107,11 +109,11 @@ Template.serviceSearch.events({
         var service = this.service;
         var product = this.product;
         var query = {
-            "project_id": Session.get('projectId'),
-            "port": port,
-            "protocol": protocol,
-            "service": service,
-            "product": product
+            project_id: Session.get('projectId'),
+            port: port,
+            protocol: protocol,
+            service: service,
+            product: product
         };
         tpl.find('[name=port]').value = port;
         tpl.find('[name=protocol]').value = protocol;
