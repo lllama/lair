@@ -5,22 +5,22 @@
         </div>
         <div class="col-xs-10">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-5">
                     <p class="large-font">Command Log</p>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-5 col-xs-offset-1">
                     <p class="large-font">Drone Log</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6" style="word-break: break-all; border: solid 1px #999999">
+                <div class="col-xs-5" style="word-break: break-all; border: solid 1px #999999">
                     <ul>
                         {{#each commands}}
                         <li>{{tool}}: {{command}}</li>
                         {{/each}}
                     </ul>
                 </div>
-                <div class="col-xs-6" style="word-break: break-all; border: solid 1px #999999">
+                <div class="col-xs-5 col-xs-offset-1" style="word-break: break-all; border: solid 1px #999999">
                     <ul>
                         {{#each logs}}
                         <li>{{this}}</li>
