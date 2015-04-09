@@ -35,11 +35,32 @@
                     </table>
                 </div>
                 <div class="col-xs-6">
-                    <form>
-                        <p>Add link to file</p>
-                        <input type="text" name="file-name" class="input-block-level" placeholder="Name" />
-                        <input type="text" name="file-url" class="input-block-level" placeholder="URL" />
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    <form class="form-horizontal">
+                        <fieldset>
+
+                            <legend>New Link to File</legend>
+
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label" for="file-name">Name</label>
+                                <div class="col-xs-8">
+                                    <input id="file-name" name="file-name" type="text" placeholder="" class="form-control input-md" required="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label" for="file-url">URL</label>
+                                <div class="col-xs-8">
+                                    <input id="file-url" name="file-url" type="text" placeholder="" class="form-control input-md" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label" for=""></label>
+                                <div class="col-xs-4">
+                                    <button id="" name="" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
                     </form>
                 </div>
             </div>
