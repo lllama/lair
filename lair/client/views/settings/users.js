@@ -1,10 +1,12 @@
-Template.users.users = function () {
-    return Meteor.users.find({
-        "_id": {
-            $not: Meteor.userId()
-        }
-    }).fetch();
-};
+Template.users.helpers({
+    users: function () {
+        return Meteor.users.find({
+            _id: {
+                $not: Meteor.userId()
+            }
+        }).fetch();
+    }
+});
 
 Template.users.events({
     'click #remove-user': function () {
