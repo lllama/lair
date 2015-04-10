@@ -8,11 +8,11 @@ accounts-password
 http
 force-ssl
 standard-app-packages
-font-awesome
-flatstrap
-moment
-spin
-filesaver
+natestrauser:font-awesome
+mrt:flatstrap
+mrt:moment
+sacha:spin
+pfafman:filesaver
 mrt:chartjs
 meteorhacks:kadira
 
